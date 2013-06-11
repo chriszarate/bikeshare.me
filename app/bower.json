@@ -1,0 +1,21 @@
+{
+  "name": "BikeShare.me",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "lodash": "~1.2.1",
+    "backbone": "~1.0.0",
+    "backbone.localStorage": "~1.1.4",
+    "backbone.marionette": "~1.0.3",
+    "jquery-ui": "~1.10.3",
+    "jqueryui-touch-punch": "latest",
+    "jquery-timeago": "~1.2.0",
+    "typeahead.js": "~0.9.2",
+    "base62": "~0.3.1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

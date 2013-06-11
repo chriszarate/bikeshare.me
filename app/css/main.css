@@ -1,0 +1,261 @@
+/* Base */
+
+body {
+  max-width: 30em;
+  margin: 0 auto;
+  padding: 0.5em 2em;
+  background-color: #eee;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+h1 {
+  margin: 0;
+  padding: 0.5em;
+  color: #333;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+h3 {
+  margin: 1em 0 0.25em 0;
+  padding: 0;
+  color: #333;
+  font-size: 1em;
+}
+
+a {
+  color: #666;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0;
+  padding: 0.5em;
+}
+
+
+/* Header */
+
+h1 a {
+  color: #333;
+  text-decoration: none;
+}
+
+
+/* Messages */
+
+#error, #warning {
+  display: none;
+  padding: 0.5em;
+  color: #333;
+  background-color: #fcc;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-align: center;
+}
+
+#warning {
+  background-color: #eff;
+}
+
+
+/* Footer */
+
+#footer {
+  margin: 1em 0;
+  color: #666;
+  font-size: 0.8em;
+}
+
+#footer p {
+  margin: 0.5em 0;
+  padding: 0;
+  text-align: center;
+}
+
+#refresh {
+  display: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#share-link {
+  display: none;
+}
+
+
+/* Input form */
+
+#nav {
+  display: none;
+  background-color: #fff;
+}
+
+#add-station {
+  width: 100%;
+  padding: 0.5em 0;
+  font-size: 1em;
+  text-indent: 0.75em;
+  border: none;
+  outline: none;
+}
+
+
+/* Typeahead.js */
+
+.twitter-typeahead, .tt-dropdown-menu, .tt-hint {
+  width: 100%;
+  padding: 0;
+}
+
+.tt-dropdown-menu {
+  background-color: #fff;
+  border-top: solid 1px #eee;
+}
+
+.tt-hint, .tt-suggestion .destroy {
+  display: none;
+}
+
+
+/* Waiting for update */
+
+span.new {
+  display: none;
+}
+
+
+/* Active */
+
+p.active .status {
+  display: none;
+}
+
+
+/* Inactive */
+
+p.inactive > span:not(.destroy) {
+  opacity: 0.4;
+}
+
+p.inactive .title {
+  text-decoration: line-through;
+}
+
+
+/* Default styles */
+
+p span, p a {
+  padding: 0 0.25em;
+}
+
+.short, .long {
+  padding: 0;
+}
+
+.short {
+  display: none;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.danger {
+  color: #f00;
+  font-weight: bold;
+}
+
+.caution {
+  color: #900;
+}
+
+.bikes, .docks {
+  float: right;
+}
+
+.destroy {
+  float: right;
+  margin-right: -2em;
+  color: #999;
+  cursor: pointer;
+}
+
+.destroy:hover {
+  color: #f33;
+}
+
+/* Sortable cursor */
+
+.ui-sortable .title {
+  cursor: move;
+}
+
+
+/* Default color (color1) */
+
+li p {
+  background-color: #acd;
+}
+
+
+/* (color2) */
+
+li p.color2 {
+  background-color: #cda;
+}
+
+
+/* (color3) */
+
+li p.color3 {
+  background-color: #dca;
+}
+
+
+/* (color4) */
+
+li p.color4 {
+  background-color: #adc;
+}
+
+
+/* (color5) */
+
+li p.color5 {
+  background-color: #dac;
+}
+
+/* (color6) */
+
+li p.color6 {
+  background-color: #ddd;
+}
+
+/* Phones? */
+@media only screen and (max-device-width : 600px) {
+
+  body {
+    padding: 0.5em 0;
+  }
+
+  .long {
+    display: none;
+  }
+
+  .short {
+    display: inline;
+  }
+
+  .destroy {
+    margin-right: 0;
+  }
+
+}
