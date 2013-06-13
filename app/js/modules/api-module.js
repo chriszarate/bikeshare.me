@@ -39,6 +39,11 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
     if(data.ok) {
 
+      // Debug.
+      if(config.debug) {
+        console.log(data);
+      }
+
       // Reset messages.
       app.vent.trigger('messages:reset');
 
