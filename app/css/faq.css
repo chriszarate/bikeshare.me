@@ -1,9 +1,9 @@
 /* Base */
 
 body {
-  max-width: 30em;
+  max-width: 32em;
   margin: 0 auto;
-  padding: 2em 0;
+  padding: 2em 1em;
   background-color: #eee;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1.1em;
@@ -16,11 +16,4 @@ a {
 
 h3 {
   margin: 1.5em 0 0.5em 0;
-}
-
-
-/* FAQ */
-
-#faq {
-  margin: 2em 0;
 }

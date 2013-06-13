@@ -82,6 +82,7 @@ makeReplacements = function(str) {
     [' and ', ' & '],
     ['Plz', 'Plaza'],
     ['Place', 'Pl'],
+    ['Square', 'Sq'],
     [' - ', '—'],
     ["'", '’']
   ];

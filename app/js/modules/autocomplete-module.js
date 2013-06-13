@@ -49,6 +49,7 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
       ['St', 'street'],
       ['Ave', 'avenue'],
       ['Pl', 'place'],
+      ['Sq', 'square'],
       ['N', 'north'],
       ['E', 'east'],
       ['S', 'south'],
