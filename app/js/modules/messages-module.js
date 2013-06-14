@@ -5,12 +5,16 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // jQuery selectors.
   var $error = $('#error'),
       $warning = $('#warning'),
-      $updated = $('#last-updated'),
-      $refresh = $('#refresh'),
+      $refresh = $('#refresh-text'),
       $share = $('#share-link'),
+
+  // Last updated date.
+  lastUpdated = false,
 
   // Report error.
   showError = function(error) {
+    lastUpdated = false;
+    $refresh.html('Error').removeClass('dimmed');
     $error.html(error).slideDown();
   },
 
@@ -27,10 +31,17 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Change last-updated date.
   updateDate = function(date) {
-    var recent = (date === 'now');
-    date = (recent) ? 'a few seconds ago' : $.timeago(date);
-    $updated.html('Updated ' + date + '.');
-    $refresh.toggle(!recent);
+    var routineUpdate = (typeof date === 'undefined');
+    if(routineUpdate && lastUpdated) {
+      var timestamp = $.timeago(lastUpdated);
+      $refresh.html(timestamp);
+      if(timestamp !== 'Updated') {
+        $refresh.removeClass('dimmed');
+      }
+    } else if(!routineUpdate) {
+      lastUpdated = date;
+      $refresh.html('Updated').addClass('dimmed');
+    }
   },
 
   // Update the "share a snapshot" link.
@@ -47,8 +58,11 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Bind to "refresh" link.
   $refresh.on('click', function() {
-    $(this).hide();
+    $(this).html('Loading').addClass('dimmed');
     app.vent.trigger('api:update:hard');
   });
+
+  // Refresh last-updated date every five seconds.
+  setInterval(updateDate, 5000);
 
 });
