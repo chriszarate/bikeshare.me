@@ -132,12 +132,13 @@ module.exports = function(grunt) {
           timestamp: true
         },
         src: [
-          'build/app.min.js',
           'build/components.min.js',
+          'build/stations.js',
+          'build/app.min.js',
           'css/main.min.css',
-          'data/stations.js'
+          'http://fonts.googleapis.com/css?family=Lato:400,700'
         ],
-        dest: 'app/manifest.appcache'
+        dest: 'app/cache.manifest'
       }
     }
   });
