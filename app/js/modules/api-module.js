@@ -2,16 +2,17 @@
 
 app.module('api', function(api, app, Backbone, Marionette, $) {
 
-  // Placeholder for last-updated date.
-  var lastUpdated = false,
+  // Placeholder for API response promise.
+  var updatePromise = false,
 
-  // API response deferred object.
-  updatePromise = new $.Deferred(),
-
+  // API endpoint.
   apiEndpoints = config.api[cache.city],
 
   // Request availablility data.
   fetchUpdate = function(bootstrap) {
+
+    // Create promise.
+    updatePromise = new $.Deferred();
 
     // Use bootstrapped data or fetch API response.
     if(bootstrap && cache.update) {
@@ -72,8 +73,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       });
 
       // Change last updated date.
-      lastUpdated = new Date();
-      app.vent.trigger('messages:updated', 'now');
+      app.vent.trigger('messages:updated', new Date());
 
     } else {
 
@@ -98,15 +98,10 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   // Send availability data to stations view.
   populateAvailability = function() {
-    updatePromise.then(function() {
-      app.main.currentView.populateAvailability(cache.stations);
-    });
-  },
-
-  // Change the last-updated date.
-  changeUpdateDate = function() {
-    if(lastUpdated) {
-      app.vent.trigger('messages:updated', lastUpdated);
+    if(updatePromise) {
+      updatePromise.then(function() {
+        app.main.currentView.populateAvailability(cache.stations);
+      });
     }
   },
 
@@ -125,8 +120,5 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   app.vent.bind('api:update:bootstrap', fetchUpdate);
   app.vent.bind('api:update:hard', updateAvailability);
   app.vent.bind('api:update:soft', populateAvailability);
-
-  // Refresh last-updated date every minute.
-  setInterval(changeUpdateDate, 60000);
 
 });
