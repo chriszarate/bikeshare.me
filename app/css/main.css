@@ -305,6 +305,10 @@ li p.color6 {
     padding: 0 0 0.5em 0;
   }
 
+  #refresh-text {
+    margin-right: 0.5em;
+  }
+
   .long {
     display: none;
   }
