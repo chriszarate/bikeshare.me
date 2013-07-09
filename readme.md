@@ -1,4 +1,4 @@
-# BikeShare.me
+# [BikeShare.me][1]
 
 ## What is this?
 
@@ -14,15 +14,16 @@ Add stations. Click on a station to change its color—I use this to group stati
 
 Does it sync somewhere?
 
-Your stations are saved to local storage. Your browser will remember your stations, but they won’t be synced to other browsers. You can also use the “snapshot” link to share/save/bookmark a list of stations. ([Here’s mine.][1])
+Your stations are saved to local storage. Your browser will remember your stations, but they won’t be synced to other browsers. You can also use the “snapshot” link to share/save/bookmark a list of stations. ([Here’s mine.][2])
 
 ## The damned thing doesn’t work!
 
-Sorry! If you’re able, please [file an issue at GitHub][2]. Otherwise, you can write to me at &#97;&#100;&#109;&#105;&#110;&#64;&#98;&#105;&#107;&#101;&#115;&#104;&#97;&#114;&#101;&#46;&#109;&#101;.
+Sorry! If you’re able, please [file an issue at GitHub][3]. Otherwise, you can write to me at &#97;&#100;&#109;&#105;&#110;&#64;&#98;&#105;&#107;&#101;&#115;&#104;&#97;&#114;&#101;&#46;&#109;&#101;.
 
 ## License
 
 This project is released under the MIT license.
 
-[1]: http://bikeshare.me/nyc/a7b-a6Y-a6Z-a57-a2q-b4U-b4c-b6H-c6a-c4B-d4Q-d4J
-[2]: https://github.com/chriszarate/bikeshare.me/issues
+[1]: http://bikeshare.me
+[2]: http://bikeshare.me/nyc/a7b-a6Y-a6Z-a57-a2q-b4U-b4c-b6H-c6a-c4B-d4Q-d4J
+[3]: https://github.com/chriszarate/bikeshare.me/issues
