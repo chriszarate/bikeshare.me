@@ -135,8 +135,7 @@ module.exports = function(grunt) {
           'build/components.min.js',
           'build/stations.js',
           'build/app.min.js',
-          'css/main.min.css',
-          'http://fonts.googleapis.com/css?family=Lato:400,700'
+          'css/main.min.css'
         ],
         dest: 'app/cache.manifest'
       }
