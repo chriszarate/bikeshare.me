@@ -195,7 +195,7 @@ h1 span.tld {
   border-top: solid 1px #eee;
 }
 
-.tt-hint, .tt-suggestion .destroy {
+.tt-hint {
   display: none;
 }
 
@@ -216,7 +216,7 @@ p.active .status {
 
 /* Inactive */
 
-p.inactive > span:not(.destroy) {
+p.inactive > span {
   opacity: 0.4;
 }
 
@@ -229,14 +229,6 @@ p.inactive .title {
 
 p span, p a {
   padding: 0 0.25em;
-}
-
-.short, .long {
-  padding: 0;
-}
-
-.short {
-  display: none;
 }
 
 .title {
@@ -253,18 +245,9 @@ p span, p a {
 }
 
 .bikes, .docks {
+  width: 2em;
   float: right;
-}
-
-.destroy {
-  float: right;
-  margin-right: -2em;
-  color: #999;
-  cursor: pointer;
-}
-
-.destroy:hover {
-  color: #f33;
+  text-align: right;
 }
 
 
@@ -327,18 +310,6 @@ li p.color6 {
 
   #refresh {
     margin-right: 0.5em;
-  }
-
-  .long {
-    display: none;
-  }
-
-  .short {
-    display: inline;
-  }
-
-  .destroy {
-    margin-right: 0;
   }
 
 }
