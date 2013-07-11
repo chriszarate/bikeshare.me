@@ -15,7 +15,7 @@ var StationView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click': 'nextColor',
-    'click span.destroy': 'clear'
+    'drop:item': 'clear'
   },
 
   initialize: function() {

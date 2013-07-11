@@ -4,12 +4,15 @@ var AppController = Marionette.Controller.extend({
 
   home: function() {
 
-    // Create new stations collection and view.
-    var stations = new Stations(),
-        stationsView = new StationsView({collection: stations});
+    // Create new stations collection.
+    var stations = new Stations();
 
     // Append new view.
-    app.main.show(stationsView);
+    app.main.show(
+      new StationsView({
+        collection: stations
+      })
+    );
 
     // Fetch from local storage.
     stations.fetch({reset: true});
@@ -17,13 +20,6 @@ var AppController = Marionette.Controller.extend({
     // Show UI.
     $('#nav').slideDown();
     $('#share').show();
-
-    // Make list sortable.
-    stationsView.$el
-      .sortable({handle: '.title', items: '> li'})
-      .on('sortupdate', function() {
-        stationsView.changeOrder();
-      });
 
   },
 

@@ -74,6 +74,7 @@ module.exports = function(grunt) {
             'app/components/jquery-ui/ui/minified/jquery.ui.widget.min.js',
             'app/components/jquery-ui/ui/minified/jquery.ui.mouse.min.js',
             'app/components/jquery-ui/ui/minified/jquery.ui.sortable.min.js',
+            'app/components/jquery-ui/ui/minified/jquery.ui.droppable.min.js',
             'app/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
             'app/components/base62/base62.min.js'
           ]

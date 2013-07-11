@@ -117,6 +117,22 @@ h1 span.tld {
   cursor: default;
 }
 
+#delete {
+  display: none;
+  padding: 0.5em 1em;
+  color: #f00;
+  background-color: #fee;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0.6;
+}
+
+#delete.hovered {
+  color: #fee;
+  background-color: #f00;
+  opacity: 1.0;
+}
+
 
 /* Messages */
 
@@ -251,6 +267,7 @@ p span, p a {
   color: #f33;
 }
 
+
 /* Sortable cursor */
 
 .ui-sortable .title {
@@ -292,13 +309,16 @@ li p.color5 {
   background-color: #dac;
 }
 
+
 /* (color6) */
 
 li p.color6 {
   background-color: #ddd;
 }
 
-/* Phones? */
+
+/* Phones */
+
 @media only screen and (max-device-width : 600px) {
 
   body {

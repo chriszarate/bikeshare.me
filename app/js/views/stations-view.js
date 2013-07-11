@@ -5,11 +5,21 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   itemView: StationView,
   tagName: 'ul',
 
-  isSorting: false,
+  events: {
+    'sortstart':  'startDrag',
+    'sortstop':   'stopDrag',
+    'sortupdate': 'changeOrder'
+  },
 
   initialize: function() {
+
+    // Listen to events.
     this.listenTo(this.collection, 'reset', this.updateAvailability);
     this.listenTo(this.collection, 'add remove change reset', this.createSnapshot);
+
+    // Activate dragging and dropping.
+    this.startDragDrop();
+
   },
 
   addStation: function(datum) {
@@ -25,8 +35,8 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
       model.update(datum.availability);
     }
 
-    // Update list sortability.
-    this.makeSortable();
+    // Update drag and drop.
+    this.updateDragDrop();
 
   },
 
@@ -49,8 +59,32 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
     }
   },
 
-  makeSortable: function() {
+  startDragDrop: function() {
+
+    // Make list sortable.
+    this.$el.sortable(config.jqueryui.sortable);
+
+    // Make target droppable.
+    config.jqueryui.dropTarget
+      .droppable(config.jqueryui.droppable)
+      .on('drop', this.processDrop);
+
+  },
+
+  updateDragDrop: function() {
     this.$el.sortable('refresh');
+  },
+
+  startDrag: function() {
+    config.jqueryui.dropTarget.show();
+  },
+
+  stopDrag: function() {
+    config.jqueryui.dropTarget.hide();
+  },
+
+  processDrop: function(event, ui) {
+    ui.draggable.trigger('drop:item');
   },
 
   changeOrder: function() {
@@ -66,9 +100,11 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
       }
     });
 
+    // Unannounce sorting.
+    this.isSorting = false;
+
     // Resort and create snapshot.
     this.collection.sort();
-    this.isSorting = false;
     this.createSnapshot();
 
   }
