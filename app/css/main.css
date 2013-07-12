@@ -225,7 +225,12 @@ p.inactive .title {
 }
 
 
-/* Default styles */
+/* Default styles (color1) */
+
+li p {
+  color: #023;
+  background-color: #acd;
+}
 
 p span, p a {
   padding: 0 0.25em;
@@ -235,19 +240,23 @@ p span, p a {
   font-weight: bold;
 }
 
+.bikes, .docks {
+  float: right;
+  width: 2em;
+  margin-left: 5px;
+  opacity: 0.3;
+  text-align: right;
+}
+
 .danger {
-  color: #f00;
+  color: #d00;
   font-weight: bold;
+  opacity: 1.0;
 }
 
 .caution {
-  color: #900;
-}
-
-.bikes, .docks {
-  width: 2em;
-  float: right;
-  text-align: right;
+  font-weight: bold;
+  opacity: 1.0;
 }
 
 
@@ -258,45 +267,50 @@ p span, p a {
 }
 
 
-/* Default color (color1) */
-
-li p {
-  background-color: #acd;
-}
-
-
 /* (color2) */
 
-li p.color2 {
+.color2 {
+  color: #230;
   background-color: #cda;
 }
 
 
 /* (color3) */
 
-li p.color3 {
+.color3 {
+  color: #320;
   background-color: #dca;
 }
 
 
 /* (color4) */
 
-li p.color4 {
+.color4 {
+  color: #032;
   background-color: #adc;
 }
 
 
 /* (color5) */
 
-li p.color5 {
+.color5 {
+  color: #302;
   background-color: #dac;
 }
 
 
 /* (color6) */
 
-li p.color6 {
+.color6 {
+  color: #111;
   background-color: #ddd;
+}
+
+/* (suggestion) */
+
+.suggestion {
+  color: #333;
+  background-color: #fff;
 }
 
 

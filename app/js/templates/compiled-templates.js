@@ -15,10 +15,14 @@ __p += '<p class="station ' +
 '</span>\n  <span class="docks ' +
 ((__t = ( flags.docks || 'new' )) == null ? '' : __t) +
 '">' +
+((__t = ( (available.docks < 10) ? '0' : '' )) == null ? '' : __t) +
+'' +
 ((__t = ( available.docks )) == null ? '' : __t) +
 ' ○</span>\n  <span class="bikes ' +
 ((__t = ( flags.bikes || 'new' )) == null ? '' : __t) +
 '">' +
+((__t = ( (available.bikes < 10) ? '0' : '' )) == null ? '' : __t) +
+'' +
 ((__t = ( available.bikes )) == null ? '' : __t) +
 ' ●</span>\n</p>\n';
 
