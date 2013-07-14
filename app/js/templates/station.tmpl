@@ -1,6 +1,7 @@
 <p class="station <%= color %> <%= flags.station %>">
   <span class="title"><%= title %></span>
   <span class="status"><%= status %></span>
+  <span class="distance"><%= distance || '' %></span>
   <span class="docks <%= flags.docks || 'new' %>"><%= (available.docks < 10) ? '0' : '' %><%= available.docks %> ○</span>
   <span class="bikes <%= flags.bikes || 'new' %>"><%= (available.bikes < 10) ? '0' : '' %><%= available.bikes %> ●</span>
 </p>

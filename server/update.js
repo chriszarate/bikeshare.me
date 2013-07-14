@@ -59,7 +59,9 @@ parseData = function(data) {
       var title = makeReplacements(station.stationName);
       stations[station.id] = {
         id: station.id,
-        title: title
+        title: title,
+        lat: station.latitude,
+        lng: station.longitude
       };
     }
   });

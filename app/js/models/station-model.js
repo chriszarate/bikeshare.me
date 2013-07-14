@@ -18,9 +18,19 @@ var Station = Backbone.Model.extend({
     flags: {}
   },
 
+  distance: '',
+
   // Change availability of station.
-  update: function(data) {
+  updateAvailability: function(data) {
+    this._updating = true;
     this.availability = data;
+    this.trigger('change');
+  },
+
+  // Change availability of station.
+  updateDistance: function(data) {
+    this._updating = true;
+    this.distance = data;
     this.trigger('change');
   },
 
@@ -36,6 +46,13 @@ var Station = Backbone.Model.extend({
   getColor: function() {
     return {
       color: config.colorFlags[this.get('color')]
+    };
+  },
+
+  // Get the distance of the stations.
+  getDistance: function() {
+    return {
+      distance: this.distance
     };
   }
 

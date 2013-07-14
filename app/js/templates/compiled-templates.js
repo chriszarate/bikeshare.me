@@ -12,6 +12,8 @@ __p += '<p class="station ' +
 ((__t = ( title )) == null ? '' : __t) +
 '</span>\n  <span class="status">' +
 ((__t = ( status )) == null ? '' : __t) +
+'</span>\n  <span class="distance">' +
+((__t = ( distance || '' )) == null ? '' : __t) +
 '</span>\n  <span class="docks ' +
 ((__t = ( flags.docks || 'new' )) == null ? '' : __t) +
 '">' +

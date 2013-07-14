@@ -21,6 +21,9 @@ var AppController = Marionette.Controller.extend({
     $('#nav').slideDown();
     $('#share').show();
 
+    app.vent.trigger('autocomplete:initialize', cache.stations);
+    app.vent.trigger('geolocation:initialize');
+
   },
 
   share: function(city, str) {

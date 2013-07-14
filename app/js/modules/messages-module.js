@@ -59,7 +59,6 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // Bind to "refresh" link.
   $refresh.on('click', function() {
     $(this).html('Loading').addClass('dimmed');
-    app.vent.trigger('api:update:hard');
   });
 
   // Refresh last-updated date every five seconds.

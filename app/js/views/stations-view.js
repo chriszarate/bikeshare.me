@@ -32,7 +32,12 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
     // Set availability data, if present.
     if(datum.availability) {
-      model.update(datum.availability);
+      model.updateAvailability(datum.availability);
+    }
+
+    // Set distance data, if present.
+    if(datum.distance) {
+      model.updateDistance(datum.distance);
     }
 
     // Update drag and drop.
@@ -47,7 +52,15 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   populateAvailability: function(stationData) {
     this.collection.each(function(model) {
       if(stationData[model.id].availability) {
-        model.update(stationData[model.id].availability);
+        model.updateAvailability(stationData[model.id].availability);
+      }
+    });
+  },
+
+  populateDistance: function(stationData) {
+    this.collection.each(function(model) {
+      if(stationData[model.id].distance) {
+        model.updateDistance(stationData[model.id].distance);
       }
     });
   },

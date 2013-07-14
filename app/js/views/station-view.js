@@ -9,6 +9,7 @@ var StationView = Backbone.Marionette.ItemView.extend({
     return $.extend(
       this.model.toJSON(),
       this.model.availability,
+      this.model.getDistance(),
       this.model.getColor()
     );
   },
@@ -23,15 +24,16 @@ var StationView = Backbone.Marionette.ItemView.extend({
   },
 
   onBeforeRender: function() {
-    if(!this.model._changing) {
+    if(!this.model._changing && !this.model._updating) {
       this.$el.hide();
     }
   },
 
   onRender: function() {
-    if(!this.model._changing) {
+    if(!this.model._changing && !this.model._updating) {
       this.$el.slideDown('fast');
     }
+    this.model._updating = false;
   },
 
   remove: function() {
