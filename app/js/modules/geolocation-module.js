@@ -3,7 +3,7 @@
 app.module('geolocation', function(api, app) {
 
   // Accuracy threshhold for location data.
-  var accuracyThreshhold = 100,
+  var accuracyThreshhold = 99999,
 
   // Parse position returned from navigator.geolocation.
   parsePosition = function(position) {
@@ -31,7 +31,8 @@ app.module('geolocation', function(api, app) {
       app.vent.trigger('autocomplete:geolocate');
 
     } else {
-      app.vent.trigger('messages:warn', 'Reported location data is too vague.');
+      var accuracy = (position.coords && typeof position.coords.accuracy === 'number') ? 'is too vague (' + position.coords.accuracy + 'm).' : 'cannot be parsed.';
+      app.vent.trigger('messages:warn', 'Reported location data ' + accuracy);
     }
 
   },

@@ -10,23 +10,21 @@ __p += '<p class="station ' +
 ((__t = ( flags.station )) == null ? '' : __t) +
 '">\n  <span class="title">' +
 ((__t = ( title )) == null ? '' : __t) +
-'</span>\n  <span class="status">' +
-((__t = ( status )) == null ? '' : __t) +
-'</span>\n  <span class="distance">' +
-((__t = ( distance || '' )) == null ? '' : __t) +
-'</span>\n  <span class="docks ' +
-((__t = ( flags.docks || 'new' )) == null ? '' : __t) +
-'">' +
-((__t = ( (available.docks < 10) ? '0' : '' )) == null ? '' : __t) +
-'' +
-((__t = ( available.docks )) == null ? '' : __t) +
-' ○</span>\n  <span class="bikes ' +
+'</span>\n  <span class="availability">\n    <span class="bikes ' +
 ((__t = ( flags.bikes || 'new' )) == null ? '' : __t) +
 '">' +
 ((__t = ( (available.bikes < 10) ? '0' : '' )) == null ? '' : __t) +
 '' +
 ((__t = ( available.bikes )) == null ? '' : __t) +
-' ●</span>\n</p>\n';
+'●</span>\n    <span class="docks ' +
+((__t = ( flags.docks || 'new' )) == null ? '' : __t) +
+'">' +
+((__t = ( (available.docks < 10) ? '0' : '' )) == null ? '' : __t) +
+'' +
+((__t = ( available.docks )) == null ? '' : __t) +
+'○</span>\n  </span>\n  <span class="distance">' +
+((__t = ( distance || '' )) == null ? '' : __t) +
+'</span>\n</p>\n';
 
 }
 return __p
