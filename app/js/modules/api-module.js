@@ -117,7 +117,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   };
 
   // Bind to "refresh" link.
-  $('refresh-text').on('click', updateAvailability);
+  $('#refresh-text').on('click', updateAvailability);
 
   // Bind to events.
   app.vent.bind('api:update:bootstrap', fetchUpdate);
