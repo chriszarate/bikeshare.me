@@ -37,8 +37,9 @@ app.module('geolocation', function(api, app) {
   },
 
   // Attempt geolocation.
-  geolocate = function() {
+  geolocate = function(e) {
     navigator.geolocation.getCurrentPosition(parsePosition);
+    e.preventDefault();
   },
 
   // Initialize geolocation features.
