@@ -18,15 +18,17 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
     $error.html(error).slideDown();
   },
 
-  // Warn the user (usually passing something along from elsewhere).
+  // Warn the user (and hide after 7s).
   showWarning = function(warning) {
     $warning.html(warning).slideDown();
+    setTimeout(function() {
+      $warning.slideUp();
+    }, 7000);
   },
 
   // Reset errors and warnings.
   resetMessages = function() {
     $error.slideUp();
-    $warning.slideUp();
   },
 
   // Change last-updated date.

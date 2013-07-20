@@ -1,4 +1,4 @@
-<p class="station <%= color %> <%= flags.station %>">
+<p class="station <%= color %> <%= flags.station %>" data-oid="<%= id %>">
   <span class="title"><%= title %></span>
   <span class="availability">
     <span class="bikes <%= flags.bikes || 'new' %>"><%= (available.bikes < 10) ? '0' : '' %><%= available.bikes %>●</span>

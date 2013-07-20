@@ -45,9 +45,6 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
         console.log(data);
       }
 
-      // Reset messages.
-      app.vent.trigger('messages:reset');
-
       // Pass along messages from the API.
       if(data.meta.length) {
         var warning = $.map(data.meta, function(str) { return str; });

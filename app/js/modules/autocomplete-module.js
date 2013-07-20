@@ -2,19 +2,16 @@
 
 app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
-  var $input = $('#add-station'),
+  // Selector cache.
+  var $input = $('#add-station'), $nearby = $('#locate-menu'),
+
+  // Placeholders.
+  defaultPlaceholder = 'Type an NYC street name.',
+  nearbyPlaceholder = 'Select a nearby station.',
 
   // Create tokens in format expected by Typeahead.
   tokenizeStations = function(i, station) {
-
-    // Generate tokens from station title.
     station.tokens = makeTokens(station.title);
-
-    // Add an additional token for nearby stations.
-    if(station.rank && i < 5) {
-      station.tokens.push('nearby');
-    }
-
   },
 
   // Populate tokens for common street abbreviations.
@@ -47,7 +44,7 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
   },
 
-  // Process user selection.
+  // Process user selection from Typeahead.
   selectStation = function(e, datum) {
 
     // Add station.
@@ -55,6 +52,18 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
     // Clear input form.
     $(this).typeahead('setQuery', '');
+
+  },
+
+  // Process user selection from nearby stations.
+  selectNearbyStation = function(e) {
+
+    // Stop bubbling.
+    e.stopPropagation();
+
+    // Add station.
+    var id = $(event.target).closest('p').data('oid');
+    app.main.currentView.addStation(cache.stations[id]);
 
   },
 
@@ -80,8 +89,30 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
   },
 
-  showNearby = function() {
-    $input.typeahead('setQuery', 'Nearby').focus();
+  resetMenus = function() {
+    $input.attr('placeholder', defaultPlaceholder);
+    $nearby.hide();
+  },
+
+  showNearby = function(stations) {
+
+    // Remove existing suggestions.
+    $input
+      .typeahead('setQuery', '')
+      .attr('placeholder', nearbyPlaceholder)
+      .blur();
+    $nearby.empty();
+
+    // Add nearby station suggestions.
+    $.each(stations, function(i, station) {
+      if(i < 5 || station.rank < 0.25) {
+        $nearby.append(suggestionTemplate(station));
+      }
+    });
+
+    // Show suggestions.
+    $nearby.show();
+
   },
 
   initialize = function(stations) {
@@ -97,6 +128,12 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
       template: suggestionTemplate,
       limit: 10
     }).on('typeahead:selected', selectStation);
+
+    // Capture clicks in nearby stations menu.
+    $nearby.on('click', selectNearbyStation);
+
+    // Hide nearby stations on "blur".
+    $(document).on('click', resetMenus);
 
   };
 

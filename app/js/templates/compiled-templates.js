@@ -8,6 +8,8 @@ __p += '<p class="station ' +
 ((__t = ( color )) == null ? '' : __t) +
 ' ' +
 ((__t = ( flags.station )) == null ? '' : __t) +
+'" data-oid="' +
+((__t = ( id )) == null ? '' : __t) +
 '">\n  <span class="title">' +
 ((__t = ( title )) == null ? '' : __t) +
 '</span>\n  <span class="availability">\n    <span class="bikes ' +
