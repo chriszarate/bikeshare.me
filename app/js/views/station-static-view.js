@@ -10,7 +10,8 @@ var StationStaticView = Backbone.Marionette.ItemView.extend({
       this.model.toJSON(),
       this.model.availability,
       this.model.getDistance(),
-      this.model.getColor()
+      this.model.getColor(),
+      {id: ''}
     );
   },
 
