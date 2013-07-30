@@ -17,8 +17,10 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
     this.listenTo(this.collection, 'reset', this.updateAvailability);
     this.listenTo(this.collection, 'add remove change reset', this.createSnapshot);
 
-    // Activate dragging and dropping.
-    this.startDragDrop();
+    // Activate dragging and dropping for editable view.
+    if(!this.options.itemView) {
+      this.startDragDrop();
+    }
 
   },
 
