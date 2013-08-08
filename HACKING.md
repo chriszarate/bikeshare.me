@@ -59,9 +59,7 @@ cd ~/bikeshare/server
 node update.js
 ```
 
-References
-----------
-
+<!-- References -->
 [github]: http://github.com
 [source]: https://github.com/chriszarate/bikeshare.me
 [nodejs]: http://nodejs.org
