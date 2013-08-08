@@ -51,6 +51,14 @@ grunt components
 grunt templates
 ```
 
+Update the stations.js file
+---------------------------
+
+```
+cd ~/bikeshare/server
+node update.js
+```
+
 References
 ----------
 
