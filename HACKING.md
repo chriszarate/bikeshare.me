@@ -39,7 +39,7 @@ Install Javascript Dependencies using [bower][bower]
 
 ```
 cd ~/bikeshare/apps
-bower install --config.directory=components
+bower install
 ```
 
 Run the needed tasks to concat and uglify using [grunt][grunt]
