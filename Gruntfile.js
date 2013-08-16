@@ -63,20 +63,20 @@ module.exports = function(grunt) {
       components: {
         files: {
           'app/build/components.min.js': [
-            'app/components/jquery/jquery.min.js',
-            'app/components/lodash/dist/lodash.underscore.min.js',
-            'app/components/backbone/backbone-min.js',
-            'app/components/backbone.localStorage/backbone.localStorage-min.js',
-            'app/components/backbone.marionette/lib/backbone.marionette.min.js',
-            'app/components/typeahead.js/dist/typeahead.min.js',
-            'app/components/jquery-timeago/jquery.timeago.min.js',
-            'app/components/jquery-ui/ui/minified/jquery.ui.core.min.js',
-            'app/components/jquery-ui/ui/minified/jquery.ui.widget.min.js',
-            'app/components/jquery-ui/ui/minified/jquery.ui.mouse.min.js',
-            'app/components/jquery-ui/ui/minified/jquery.ui.sortable.min.js',
-            'app/components/jquery-ui/ui/minified/jquery.ui.droppable.min.js',
-            'app/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
-            'app/components/base62/base62.min.js'
+            'app/bower_components/jquery/jquery.min.js',
+            'app/bower_components/lodash/dist/lodash.underscore.min.js',
+            'app/bower_components/backbone/backbone-min.js',
+            'app/bower_components/backbone.localStorage/backbone.localStorage-min.js',
+            'app/bower_components/backbone.marionette/lib/backbone.marionette.min.js',
+            'app/bower_components/typeahead.js/dist/typeahead.min.js',
+            'app/bower_components/jquery-timeago/jquery.timeago.min.js',
+            'app/bower_components/jquery-ui/ui/minified/jquery.ui.core.min.js',
+            'app/bower_components/jquery-ui/ui/minified/jquery.ui.widget.min.js',
+            'app/bower_components/jquery-ui/ui/minified/jquery.ui.mouse.min.js',
+            'app/bower_components/jquery-ui/ui/minified/jquery.ui.sortable.min.js',
+            'app/bower_components/jquery-ui/ui/minified/jquery.ui.droppable.min.js',
+            'app/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
+            'app/bower_components/base62/base62.min.js'
           ]
         }
       }
@@ -103,8 +103,8 @@ module.exports = function(grunt) {
       },
       components: {
         files: {
-          'app/components/jquery-timeago/jquery.timeago.min.js': [
-            'app/components/jquery-timeago/jquery.timeago.js'
+          'app/bower_components/jquery-timeago/jquery.timeago.min.js': [
+            'app/bower_components/jquery-timeago/jquery.timeago.js'
           ]
         }
       }
