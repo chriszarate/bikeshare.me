@@ -1,4 +1,4 @@
-# [BikeShare.me][1]
+# [BikeShare.me][bikeshare]
 
 ## What is this?
 
@@ -16,16 +16,49 @@ The number in front of a solid circle (●) indicates available bikes. The numbe
 
 ## Does it sync somewhere?
 
-Your stations are saved to local storage. Your browser will remember your stations, but they won’t be synced to other browsers. You can also click the share icon, which links to a snapshot of the current list of stations that you can share/save/bookmark. ([Here’s mine.][2])
+Your stations are saved to local storage. Your browser will remember your stations, but they won’t be synced to other browsers. You can also click the share icon, which links to a snapshot of the current list of stations that you can share/save/bookmark. ([Here’s mine.][shared])
 
 ## It doesn’t work for me!
 
-Sorry! If you’re able, please [file an issue at GitHub][3]. Otherwise, you can write to me at &#97;&#100;&#109;&#105;&#110;&#64;&#98;&#105;&#107;&#101;&#115;&#104;&#97;&#114;&#101;&#46;&#109;&#101;.
+Sorry! If you’re able, please [file an issue at GitHub][issues]. Otherwise, you can write to me at &#97;&#100;&#109;&#105;&#110;&#64;&#98;&#105;&#107;&#101;&#115;&#104;&#97;&#114;&#101;&#46;&#109;&#101;.
+
+## Run your own copy
+
+Bikeshare.me uses [Node.js][nodejs], [Bower][bower], and [Grunt][grunt].
+
+```
+# Clone this GitHub repository.
+git clone https://github.com/chriszarate/bikeshare.me bikeshare
+
+# Install Node.js dependencies.
+cd bikeshare && npm install
+
+# Install Bower dependencies.
+cd app && bower install
+
+# Compile templates, uglify dependencies, and fetch latest station data.
+grunt setup
+
+# Uglify local code, minify CSS, generate HTML5 cache manifest, etc.
+grunt default
+```
+
+Note that Bikeshare.me is expected to run at the site root.
+
+You should periodically update the station data since stations are occasionally added, removed, or moved. Run this using your favorite cron tool:
+
+```
+node /path/to/bikeshare/server/update.js
+```
 
 ## License
 
 This project is released under the MIT license.
 
-[1]: http://bikeshare.me
-[2]: http://bikeshare.me/nyc/a7b-a6Y-a6Z-a57-a2q-b4U-b4c-b6H-c6a-c4B-d4Q-d4J
-[3]: https://github.com/chriszarate/bikeshare.me/issues
+<!-- References -->
+[bikeshare]: http://bikeshare.me
+[shared]: http://bikeshare.me/nyc/a7b-a6Y-a6Z-a57-a2q-b4U-b4c-b6H-c6a-c4B-d4Q-d4J
+[issues]: https://github.com/chriszarate/bikeshare.me/issues
+[nodejs]: http://nodejs.org
+[bower]: https://github.com/bower/bower
+[grunt]: http://gruntjs.com/
