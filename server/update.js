@@ -4,6 +4,7 @@
 
 // Dependencies
 var http = require('http'),
+    path = require('path'),
     fs = require('fs'),
 
 // Options for HTTP request.
@@ -13,7 +14,7 @@ apiURL = 'http://citibikenyc.com/stations/json',
 cityCode = 'nyc',
 
 // File name for API cache.
-outputCache = '../app/build/stations.js',
+outputCache = path.resolve(__dirname, '../app/build/stations.js'),
 
 // Process HTTP response.
 getData = function(res) {

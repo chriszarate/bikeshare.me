@@ -156,7 +156,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-manifest');
 
   grunt.registerTask('default', ['concat:app', 'jshint', 'uglify:app', 'cssmin', 'manifest']);
+  grunt.registerTask('setup', ['templates', 'components', 'stations']);
   grunt.registerTask('templates', ['jst']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
+
+  grunt.registerTask('stations', function () {
+    grunt.util.spawn({
+      cmd: process.argv[0],
+      args: ['server/update.js']
+    });
+    console.log('File "app/build/stations.js" created.');
+  });
 
 };
