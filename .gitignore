@@ -1,5 +1,7 @@
+.DS_Store
 node_modules
 app/bower_components/
 app/build/
 app/cache.manifest
 app/css/*.min.css
+etc/
