@@ -18,6 +18,7 @@ var Station = Backbone.Model.extend({
     flags: {}
   },
 
+  alt: '',
   distance: '',
 
   // Change availability of station.
@@ -49,7 +50,14 @@ var Station = Backbone.Model.extend({
     };
   },
 
-  // Get the distance of the stations.
+  // Get the alternate name of the station.
+  getAlternate: function() {
+    return {
+      alt: this.alt
+    };
+  },
+
+  // Get the distance of the station.
   getDistance: function() {
     return {
       distance: this.distance

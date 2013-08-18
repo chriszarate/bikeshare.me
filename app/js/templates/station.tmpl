@@ -4,5 +4,8 @@
     <span class="bikes <%= flags.bikes || 'new' %>"><%= (available.bikes < 10) ? '0' : '' %><%= available.bikes %>●</span>
     <span class="docks <%= flags.docks || 'new' %>"><%= (available.docks < 10) ? '0' : '' %><%= available.docks %>○</span>
   </span>
+  <% if(alt) { %>
+    <span class="alt"><%= alt || '' %></span>
+  <% } %>
   <span class="distance"><%= distance || '' %></span>
 </p>

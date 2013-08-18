@@ -2,7 +2,8 @@ this["JST"] = this["JST"] || {};
 
 this["JST"]["app/js/templates/station.tmpl"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<p class="station ' +
 ((__t = ( color )) == null ? '' : __t) +
@@ -24,7 +25,13 @@ __p += '<p class="station ' +
 ((__t = ( (available.docks < 10) ? '0' : '' )) == null ? '' : __t) +
 '' +
 ((__t = ( available.docks )) == null ? '' : __t) +
-'○</span>\n  </span>\n  <span class="distance">' +
+'○</span>\n  </span>\n  ';
+ if(alt) { ;
+__p += '\n    <span class="alt">' +
+((__t = ( alt || '' )) == null ? '' : __t) +
+'</span>\n  ';
+ } ;
+__p += '\n  <span class="distance">' +
 ((__t = ( distance || '' )) == null ? '' : __t) +
 '</span>\n</p>\n';
 

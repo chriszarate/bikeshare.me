@@ -9,29 +9,32 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
   defaultPlaceholder = 'Type an NYC street name.',
   nearbyPlaceholder = 'Select a nearby station.',
 
+  // Expansions for common street abbreviations.
+  tokenKeys = [
+    ['Ft.', 'fort'],
+    ['St.', 'saint'],
+    ['St', 'street'],
+    ['Ave', 'avenue'],
+    ['Pl', 'place'],
+    ['Sq', 'square'],
+    ['N', 'north'],
+    ['E', 'east'],
+    ['S', 'south'],
+    ['W', 'west'],
+    ['&', 'and']
+  ],
+
   // Create tokens in format expected by Typeahead.
   tokenizeStations = function(i, station) {
-    station.tokens = makeTokens(station.title);
+    var alt = (station.alt) ? ' ' + station.alt : '';
+    station.tokens = makeTokens(station.title + alt);
   },
 
   // Populate tokens for common street abbreviations.
   makeTokens = function(str) {
 
-    var tokenKeys = [
-      ['Ft.', 'fort'],
-      ['St.', 'saint'],
-      ['St', 'street'],
-      ['Ave', 'avenue'],
-      ['Pl', 'place'],
-      ['Sq', 'square'],
-      ['N', 'north'],
-      ['E', 'east'],
-      ['S', 'south'],
-      ['W', 'west'],
-      ['&', 'and']
-    ],
-    words = str.split(/ +/),
-    tokens = [];
+    var tokens = [],
+        words = str.split(/[\/,— ]+/);
 
     // Tokens
     tokenKeys.forEach(function(key) {
@@ -74,6 +77,7 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
     var model = {
       id: datum.id,
       title: datum.title,
+      alt: datum.alt || '',
       distance: datum.distance || '',
       color: 'suggestion',
       status: '',
