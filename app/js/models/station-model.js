@@ -43,6 +43,15 @@ var Station = Backbone.Model.extend({
     });
   },
 
+  // Get the title of the station.
+  getTitle: function() {
+    // Use updated station data, if available.
+    // Fallback to locally stored title or a shrug.
+    return {
+      title: (cache.stations[this.id]) ? cache.stations[this.id].title : this.get('title') || 'Unknown (' + this.id + ')'
+    };
+  },
+
   // Get the class name of the color.
   getColor: function() {
     return {
