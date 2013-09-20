@@ -63,7 +63,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
     $(this).html('Loading').addClass('dimmed');
   });
 
-  // Refresh last-updated date every five seconds.
-  setInterval(updateDate, 5000);
+  // Refresh last-updated date every second.
+  setInterval(updateDate, 1000);
 
 });
