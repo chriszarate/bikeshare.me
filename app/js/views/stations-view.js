@@ -53,15 +53,24 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
   populateAvailability: function(stationData) {
     this.collection.each(function(model) {
-      if(stationData[model.id].availability) {
-        model.updateAvailability(stationData[model.id].availability);
+      if(stationData[model.id]) {
+        if(stationData[model.id].availability) {
+          model.updateAvailability(stationData[model.id].availability);
+        }
+      } else {
+        // Station does not exist, make it appear inactive.
+        model.updateAvailability({
+          status: 'Inactive',
+          available: {},
+          flags: {station: 'inactive'}
+        });
       }
     });
   },
 
   populateDistance: function(stationData) {
     this.collection.each(function(model) {
-      if(stationData[model.id].distance) {
+      if(stationData[model.id] && stationData[model.id].distance) {
         model.updateDistance(stationData[model.id].distance);
       }
     });
