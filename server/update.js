@@ -102,7 +102,7 @@ getData = function(res) {
 
 },
 
-// Parse response to extract details of latest strike.
+// Parse response.
 parseData = function(data) {
 
   // Parse data as JSON.
