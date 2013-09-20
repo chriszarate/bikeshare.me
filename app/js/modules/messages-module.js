@@ -11,6 +11,9 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // Last updated date.
   lastUpdated = false,
 
+  // Internal loading indicator.
+  isLoading = false,
+
   // Report error.
   showError = function(error) {
     lastUpdated = false;
@@ -34,7 +37,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // Change last-updated date.
   updateDate = function(date) {
     var routineUpdate = (typeof date === 'undefined');
-    if(routineUpdate && lastUpdated) {
+    if(routineUpdate && lastUpdated && !isLoading) {
       var timestamp = $.timeago(lastUpdated);
       $refresh.html(timestamp);
       if(timestamp !== 'Updated') {
@@ -42,6 +45,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
       }
     } else if(!routineUpdate) {
       lastUpdated = date;
+      isLoading = false;
       $refresh.html('Updated').addClass('dimmed');
     }
   },
@@ -60,6 +64,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Bind to "refresh" link.
   $refresh.on('click', function() {
+    isLoading = true;
     $(this).html('Loading').addClass('dimmed');
   });
 
