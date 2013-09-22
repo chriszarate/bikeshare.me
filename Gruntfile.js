@@ -85,8 +85,12 @@ module.exports = function(grunt) {
     uglify: {
       app: {
         options: {
-          banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n'
-          },
+          banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n',
+          sourceMap: 'app/build/app.js.map',
+          sourceMapRoot: '/',
+          sourceMapPrefix: 1,
+          sourceMappingURL: '/build/app.js.map'
+        },
         files: {
           'app/build/app.min.js': [
             'app/js/config/*.js',
@@ -106,6 +110,20 @@ module.exports = function(grunt) {
           'app/bower_components/jquery-timeago/jquery.timeago.min.js': [
             'app/bower_components/jquery-timeago/jquery.timeago.js'
           ]
+        }
+      }
+    },
+
+    "string-replace": {
+      fix: {
+        files: {
+          'app/build/app.js.map': 'app/build/app.js.map'
+        },
+        options: {
+          replacements: [{
+            pattern: '"file":"app/build/app.min.js"',
+            replacement: '"file":"build/app.min.js"'
+          }]
         }
       }
     },
@@ -153,9 +171,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-manifest');
 
-  grunt.registerTask('default', ['concat:app', 'jshint', 'uglify:app', 'cssmin', 'manifest']);
+  grunt.registerTask('default', ['concat:app', 'jshint', 'uglify:app', 'string-replace:fix', 'cssmin', 'manifest']);
   grunt.registerTask('setup', ['templates', 'components', 'stations']);
   grunt.registerTask('templates', ['jst']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
