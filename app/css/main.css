@@ -25,14 +25,6 @@ body {
   font-size: 1em;
 }
 
-h1 {
-  margin: 0;
-  padding: 0;
-  padding-top: 0.25em;
-  color: #333;
-  font-size: 1.2em;
-}
-
 a {
   color: #000;
 }
@@ -58,12 +50,20 @@ p {
   margin: 0 auto;
 }
 
-h1, #error, #warning, #nearby, #stations, #add, #delete, #suggestions {
+#error, #warning, #nearby, #stations, #add, #delete, #suggestions {
   margin-top: 0.5em;
 }
 
 
 /* Header */
+
+h1 {
+  margin: 0;
+  padding: 0;
+  padding-top: 0.5em;
+  color: #333;
+  font-size: 1.2em;
+}
 
 h1 a {
   color: #333;
@@ -79,7 +79,7 @@ h1 span.tld {
 
 #tools {
   position: absolute;
-  top: 0;
+  top: 0.45em;
   right: 0;
   text-align: right;
 }
