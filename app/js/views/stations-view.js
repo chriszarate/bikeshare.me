@@ -92,7 +92,7 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   createSnapshot: function() {
     if(this.options.editable && !this.isSorting) {
       var base62link = this.collection.map(app.snapshot.encode);
-      app.vent.trigger('messages:share', base62link.join('-'));
+      app.vent.trigger('messages:snapshot:link', base62link.join('-'));
     }
   },
 

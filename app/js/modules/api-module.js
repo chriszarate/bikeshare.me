@@ -26,7 +26,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       }).done(function(data) {
         updatePromise.resolve(data);
       }).fail(function() {
-        app.vent.trigger('messages:error', 'Could not connect to the server.');
+        app.vent.trigger('messages:api:error', 'Could not connect to the server.');
       });
     }
 
@@ -70,12 +70,12 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       });
 
       // Change last updated date.
-      app.vent.trigger('messages:updated', new Date());
+      app.vent.trigger('messages:api:updated', new Date());
 
     } else {
 
       // Data was not usable.
-      app.vent.trigger('messages:error', 'Cannot read availability data.');
+      app.vent.trigger('messages:api:error', 'Cannot read availability data.');
 
     }
 
