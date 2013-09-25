@@ -102,6 +102,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
       }
     } else {
       config.els.geolocation.container.slideUp();
+      setLocalStorage('disable-geolocation', 'true');
       app.vent.trigger('messages:error', 'Could not determine your location.');
     }
 
