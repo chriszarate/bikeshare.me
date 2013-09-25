@@ -2,14 +2,8 @@
 
 app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
-  // jQuery selectors.
-  var $error = $('#error'),
-      $warning = $('#warning'),
-      $refresh = $('#refresh-text'),
-      $share = $('#share-link'),
-
   // Last updated date.
-  lastUpdated = false,
+  var lastUpdated = false,
 
   // Internal loading indicator.
   isLoading = false,
@@ -17,42 +11,44 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // Report error.
   showError = function(error) {
     lastUpdated = false;
-    $refresh.html('Error').removeClass('dimmed');
-    $error.html(error).slideDown();
+    config.els.api.button.html('Error').removeClass();
+    config.els.messages.error.html(error).slideDown();
   },
 
   // Warn the user (and hide after 7s).
   showWarning = function(warning) {
-    $warning.html(warning).slideDown();
+    config.els.messages.warning.html(warning).slideDown();
     setTimeout(function() {
-      $warning.slideUp();
+      config.els.messages.warning.slideUp();
     }, 7000);
   },
 
   // Reset errors and warnings.
   resetMessages = function() {
-    $error.slideUp();
+    config.els.messages.error.slideUp();
   },
 
   // Change last-updated date.
   updateDate = function(date) {
-    var routineUpdate = (typeof date === 'undefined');
-    if(routineUpdate && lastUpdated && !isLoading) {
-      var timestamp = $.timeago(lastUpdated);
-      $refresh.html(timestamp);
-      if(timestamp !== 'Updated') {
-        $refresh.removeClass('dimmed');
+    if(typeof date === 'undefined') {
+      if(lastUpdated && !isLoading) {
+        var timeago = $.timeago(lastUpdated);
+        if(timeago !== config.els.api.button.html()) {
+          config.els.api.button.html(timeago)
+            .removeClass()
+            .toggleClass('old', timeago !== '1 min');
+        }
       }
-    } else if(!routineUpdate) {
+    } else {
       lastUpdated = date;
       isLoading = false;
-      $refresh.html('Updated').addClass('dimmed');
+      config.els.api.button.html('Updated').removeClass().addClass('dimmed');
     }
   },
 
   // Update the "share a snapshot" link.
   updateSnapshotLink = function(link) {
-    $share.attr('href', '/' + cache.city + '/' + link).toggle(Boolean(link));
+    config.els.snapshot.button.attr('href', '/' + cache.city + '/' + link).toggle(Boolean(link));
   };
 
   // Bind to events.
@@ -63,9 +59,9 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   app.vent.bind('messages:share', updateSnapshotLink);
 
   // Bind to "refresh" link.
-  $refresh.on('click', function() {
+  config.els.api.button.on('click', function() {
     isLoading = true;
-    $(this).html('Loading').addClass('dimmed');
+    $(this).html('Loading').removeClass().addClass('dimmed');
   });
 
   // Refresh last-updated date every second.

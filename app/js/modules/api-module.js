@@ -82,7 +82,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   },
 
   // Update station availability.
-  updateAvailability = function() {
+  updateAvailability = function(e) {
 
     // Request update.
     fetchUpdate(false);
@@ -91,6 +91,10 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     app.vent.trigger('messages:reset');
     populateAvailability();
 
+    // Stop propagation.
+    e.preventDefault();
+    e.stopPropagation();
+
   },
 
   // Send availability data to stations view.
@@ -98,6 +102,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     if(updatePromise) {
       updatePromise.then(function() {
         app.main.currentView.populateAvailability(cache.stations);
+        app.nearby.currentView.populateAvailability(cache.stations);
       });
     }
   },
@@ -113,8 +118,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     return 'ok';
   };
 
-  // Bind to "refresh" link.
-  $('#refresh-text').on('click', updateAvailability);
+  // Bind to "refresh" button.
+  config.els.api.button.on('click', updateAvailability);
 
   // Bind to events.
   app.vent.bind('api:update:bootstrap', fetchUpdate);

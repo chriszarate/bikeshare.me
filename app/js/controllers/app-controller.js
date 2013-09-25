@@ -7,21 +7,30 @@ var AppController = Marionette.Controller.extend({
     // Create new stations collection.
     var stations = new Stations();
 
-    // Append new view.
+    // Append view for saved stations.
     app.main.show(
       new StationsView({
-        collection: stations
+        collection: stations,
+        editable: true
       })
     );
 
-    // Fetch from local storage.
+    // Append view for nearby stations.
+    app.nearby.show(
+      new StationsView({
+        collection: new Stations()
+      })
+    );
+
+    // Fetch stations from local storage.
     stations.fetch({reset: true});
 
-    // Show UI.
-    $('#nav').slideDown();
-    $('#share').show();
+    // Show/hide UI elements.
+    config.els.snapshot.button.show();
+    config.els.geolocation.container.hide();
+    config.els.suggestions.button.show();
 
-    app.vent.trigger('autocomplete:initialize', cache.stations);
+    app.vent.trigger('suggestions:initialize', cache.stations);
     app.vent.trigger('geolocation:initialize');
 
   },
@@ -34,19 +43,18 @@ var AppController = Marionette.Controller.extend({
     // Proceed if valid.
     if(snapshot.length) {
 
+      // Create new stations collection.
+      var stations = new Stations();
+
       $.each(snapshot, function(i, datum) {
         if(cache.stations[datum.id]) {
           datum.title = cache.stations[datum.id].title;
         }
       });
 
-      // Create new stations collection.
-      var stations = new Stations({localStorage: false});
-
       // Append new read-only view.
       app.main.show(
         new StationsView({
-          itemView: StationStaticView,
           collection: stations
         })
       );
@@ -54,9 +62,11 @@ var AppController = Marionette.Controller.extend({
       stations.reset(snapshot);
       app.vent.trigger('api:update', false);
 
-      // Hide UI.
-      $('#nav').hide();
-      $('#share').hide();
+      // Show/hide UI elements.
+      config.els.geolocation.container.hide();
+      config.els.snapshot.button.hide();
+      config.els.suggestions.main.hide();
+      config.els.suggestions.button.hide();
 
     } else {
       this.error();

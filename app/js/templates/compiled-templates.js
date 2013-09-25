@@ -31,9 +31,13 @@ __p += '\n    <span class="alt">' +
 ((__t = ( alt || '' )) == null ? '' : __t) +
 '</span>\n  ';
  } ;
-__p += '\n  <span class="distance">' +
+__p += '\n  ';
+ if(distance) { ;
+__p += '\n    <span class="distance">' +
 ((__t = ( distance || '' )) == null ? '' : __t) +
-'</span>\n</p>\n';
+'</span>\n  ';
+ } ;
+__p += '\n</p>\n';
 
 }
 return __p

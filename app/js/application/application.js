@@ -5,7 +5,8 @@ var app = new Backbone.Marionette.Application();
 
 // Define regions.
 app.addRegions({
-  main: '#stations'
+  main: '#stations',
+  nearby: '#nearby-stations'
 });
 
 // Create the router and controller.

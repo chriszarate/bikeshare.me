@@ -15,3 +15,30 @@ config.colorFlags = [
   'color5',
   'color6'
 ];
+
+config.els = {
+  app: {
+    main: $('#main')
+  },
+  api: {
+    button: $('#refresh')
+  },
+  geolocation: {
+    main: $('#nearby-stations'),
+    container: $('#nearby'),
+    button: $('#geolocate'),
+    close: $('#nearby .close-button')
+  },
+  messages: {
+    error: $('#error'),
+    warning: $('#warning')
+  },
+  snapshot: {
+    button: $('#snapshot')
+  },
+  suggestions: {
+    main: $('#suggestions'),
+    input: $('#user-input'),
+    button: $('#add')
+  }
+};

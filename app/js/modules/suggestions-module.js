@@ -1,16 +1,9 @@
-/* Autocomplete module */
+/* Suggestions module */
 
-app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
-
-  // Selector cache.
-  var $input = $('#add-station'), $nearby = $('#locate-menu'),
-
-  // Placeholders.
-  defaultPlaceholder = 'Type an NYC street name.',
-  nearbyPlaceholder = 'Select a nearby station.',
+app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   // Expansions for common street abbreviations.
-  tokenKeys = [
+  var tokenKeys = [
     ['Ft.', 'fort'],
     ['St.', 'saint'],
     ['St', 'street'],
@@ -58,18 +51,6 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
   },
 
-  // Process user selection from nearby stations.
-  selectNearbyStation = function(e) {
-
-    // Stop bubbling.
-    e.stopPropagation();
-
-    // Add station.
-    var id = $(event.target).closest('p').data('oid');
-    app.main.currentView.addStation(cache.stations[id]);
-
-  },
-
   // Format suggestions.
   suggestionTemplate = function(datum) {
 
@@ -93,30 +74,19 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
 
   },
 
-  resetMenus = function() {
-    $input.attr('placeholder', defaultPlaceholder);
-    $nearby.hide();
+  showUI = function() {
+    config.els.suggestions.button.hide();
+    config.els.suggestions.main.show();
+    config.els.suggestions.input.focus();
   },
 
-  showNearby = function(stations) {
+  hideUI = function() {
+    config.els.suggestions.main.hide();
+    config.els.suggestions.button.show();
+  },
 
-    // Remove existing suggestions.
-    $input
-      .typeahead('setQuery', '')
-      .attr('placeholder', nearbyPlaceholder)
-      .blur();
-    $nearby.empty();
-
-    // Add nearby station suggestions.
-    $.each(stations, function(i, station) {
-      if(i < 5 || station.rank < 0.25) {
-        $nearby.append(suggestionTemplate(station));
-      }
-    });
-
-    // Show suggestions.
-    $nearby.show();
-
+  scrollToFit = function() {
+    $('html, body').animate({scrollTop: $(document).height()});
   },
 
   initialize = function(stations) {
@@ -125,24 +95,22 @@ app.module('typeahead', function(typeahead, app, Backbone, Marionette, $) {
     $.each(stations, tokenizeStations);
 
     // Bind Typeahead to input field.
-    $input.typeahead({
+    config.els.suggestions.input.typeahead({
       name: 'stations-' + new Date().getTime(),
       valueKey: 'title',
       local: stations,
       template: suggestionTemplate,
       limit: 10
-    }).on('typeahead:selected', selectStation);
+    }).on('typeahead:selected', selectStation)
+      .on('typeahead:opened', scrollToFit)
+      .on('typeahead:closed', hideUI);
 
-    // Capture clicks in nearby stations menu.
-    $nearby.on('click', selectNearbyStation);
-
-    // Hide nearby stations on "blur".
-    $(document).on('click', resetMenus);
+    // Activate add station button.
+    config.els.suggestions.button.on('click', showUI);
 
   };
 
   // Bind to events.
-  app.vent.bind('autocomplete:initialize', initialize);
-  app.vent.bind('autocomplete:geolocate', showNearby);
+  app.vent.bind('suggestions:initialize', initialize);
 
 });

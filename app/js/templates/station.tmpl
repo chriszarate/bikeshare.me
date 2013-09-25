@@ -7,5 +7,7 @@
   <% if(alt) { %>
     <span class="alt"><%= alt || '' %></span>
   <% } %>
-  <span class="distance"><%= distance || '' %></span>
+  <% if(distance) { %>
+    <span class="distance"><%= distance || '' %></span>
+  <% } %>
 </p>

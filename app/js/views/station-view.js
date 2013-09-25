@@ -44,9 +44,10 @@ var StationView = Backbone.Marionette.ItemView.extend({
     });
   },
 
-  nextColor: function(e) {
-    this.model.nextColor();
-    e.preventDefault();
+  nextColor: function() {
+    if(!this.model._static) {
+      this.model.nextColor();
+    }
   },
 
   clear: function(e) {

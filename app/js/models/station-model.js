@@ -21,6 +21,9 @@ var Station = Backbone.Model.extend({
   alt: '',
   distance: '',
 
+  _static: true,
+  _updating: false,
+
   // Change availability of station.
   updateAvailability: function(data) {
     this._updating = true;

@@ -15,10 +15,11 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
     // Listen to events.
     this.listenTo(this.collection, 'reset', this.updateAvailability);
+    this.listenTo(this.collection, 'add', this.updateStation);
     this.listenTo(this.collection, 'add remove change reset', this.createSnapshot);
 
-    // Activate dragging and dropping for editable view.
-    if(!this.options.itemView) {
+    // Activate dragging and dropping.
+    if(this.options.editable) {
       this.startDragDrop();
     }
 
@@ -27,23 +28,35 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   addStation: function(datum) {
 
     // Add station to collection.
-    var model = this.collection.create({
+    this.collection.add({
       id: datum.id,
       title: datum.title
-    });
+    }, datum);
+
+    // Update drag and drop.
+    if(this.options.editable) {
+      this.updateDragDrop();
+    }
+
+  },
+
+  updateStation: function(model, collection, attributes) {
+
+    // Save model as needed.
+    if(this.options.editable) {
+      model._static = false;
+      model.save();
+    }
 
     // Set availability data, if present.
-    if(datum.availability) {
-      model.updateAvailability(datum.availability);
+    if(attributes && attributes.availability) {
+      model.updateAvailability(attributes.availability);
     }
 
     // Set distance data, if present.
-    if(datum.distance) {
-      model.updateDistance(datum.distance);
+    if(attributes && attributes.distance) {
+      model.updateDistance(attributes.distance);
     }
-
-    // Update drag and drop.
-    this.updateDragDrop();
 
   },
 
@@ -77,7 +90,7 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   },
 
   createSnapshot: function() {
-    if(!this.isSorting) {
+    if(this.options.editable && !this.isSorting) {
       var base62link = this.collection.map(app.snapshot.encode);
       app.vent.trigger('messages:share', base62link.join('-'));
     }
@@ -101,10 +114,12 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
   startDrag: function() {
     config.jqueryui.dropTarget.show();
+    config.els.suggestions.button.hide();
   },
 
   stopDrag: function() {
     config.jqueryui.dropTarget.hide();
+    config.els.suggestions.button.show();
   },
 
   processDrop: function(event, ui) {

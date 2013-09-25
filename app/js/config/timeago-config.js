@@ -4,7 +4,7 @@ $.timeago.settings.refreshMillis = 5000;
 $.timeago.settings.strings = $.extend($.timeago.settings.strings, {
   suffixAgo: "",
   seconds: "Updated",
-  minute: "Updated",
+  minute: "1 min",
   minutes: "%d mins",
   hour: "1 hr",
   hours: "%d hrs",

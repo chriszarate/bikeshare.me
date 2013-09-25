@@ -21,27 +21,43 @@
 
   <body>
 
-    <div id="refresh">
-      <span id="refresh-text" class="dimmed">Loading</span>
-    </div>
+    <div id="app">
 
-    <div id="share">
-      <a id="share-link" href="#" title="Share a read-only copy of this list."></a>
-    </div>
+      <h1><a href="/">BikeShare<span class="tld">.me</span></a></h1>
 
-    <h1><a href="/">BikeShare<span class="tld">.me</span></a></h1>
-
-    <div id="error"></div>
-    <div id="stations"></div>
-    <div id="delete">Drop here to delete.</div>
-    <div id="warning"></div>
-
-    <div id="nav">
-      <input id="add-station" type="text" placeholder="Type an NYC street name.">
-      <div id="locate">
-        <a id="locate-link" href="#" title="Show nearby stations."></a>
+      <div id="tools">
+        <div id="refresh" class="dimmed">Loading</div>
+        <div id="snapshot" title="Share a read-only copy of this list."></div>
+        <div id="geolocate" title="Show nearby stations."></div>
       </div>
-      <div id="locate-menu"></div>
+
+      <div id="messages">
+        <div id="error"></div>
+        <div id="warning"></div>
+      </div>
+
+      <div id="main">
+
+        <div id="nearby">
+          <h3>Nearby</h3>
+          <div class="loading-indicator"></div>
+          <div class="close-button">×</div>
+          <div id="nearby-stations"></div>
+        </div>
+
+        <div id="stations"></div>
+
+        <div id="controls">
+          <div id="delete">Drop here to delete.</div>
+          <div id="add">+ Add a station</div>
+        </div>
+
+      </div>
+
+      <div id="suggestions">
+        <input id="user-input" type="text" placeholder="Type a street name or landmark.">
+      </div>
+
     </div>
 
     <div id="footer">
@@ -54,7 +70,8 @@
     <script src="/build/components.min.js"></script>
 
     <script src="/build/stations.js"></script>
-    <script src="/build/app.min.js"></script>
+    <script src="/js/templates/compiled-templates.js"></script>
+    <script src="/build/app.js"></script>
 
   </body>
 

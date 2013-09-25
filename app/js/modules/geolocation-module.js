@@ -2,10 +2,8 @@
 
 app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
-  var $link = $('#locate-link'),
-
   // Threshholds and defaults
-  options = {
+  var options = {
     enableHighAccuracy: true,  // effectiveness varies
     desiredAccuracy: 20,       // m
     warnableAccuracy: 76.2,    // m
@@ -65,7 +63,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   parsePosition = function(pos) {
 
     // Hide loading indicator.
-    $link.removeClass('loading');
+    config.els.geolocation.container.removeClass('loading');
 
     // Format coordinates for helper function.
     var coordinates = {
@@ -79,22 +77,21 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
       station.distance = formatDistance(station.rank);
     });
 
-    // Send location data to existing views.
+    // Send location data to main view.
     app.main.currentView.populateDistance(cache.stations);
 
     // Sort stations from closest to farthest.
     var sortedStations = _.sortBy(cache.stations, 'rank');
 
-    // Reinitialize the autocomplete module with a sorted station list.
-    app.vent.trigger('autocomplete:initialize', sortedStations);
-    app.vent.trigger('autocomplete:geolocate', sortedStations);
+    // Show closest stations.
+    showNearby(sortedStations);
 
   },
 
   positionError = function(pos) {
 
     // Hide loading indicator.
-    $link.removeClass('loading');
+    config.els.geolocation.container.removeClass('loading');
 
     // Warn user if location is inaccurate.
     if(pos) {
@@ -104,24 +101,74 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
         app.vent.trigger('messages:warn', 'Your location is accurate to about ' + Math.round(pos.coords.accuracy * 3.28084) + ' ft.');
       }
     } else {
+      config.els.geolocation.container.slideUp();
       app.vent.trigger('messages:error', 'Could not determine your location.');
     }
 
   },
 
-  // Attempt geolocation.
-  geolocate = function(e) {
-    $link.addClass('loading');
-    getPosition(parsePosition, positionError);
-    e.preventDefault();
+  // Process user selection from nearby stations.
+  selectNearbyStation = function(e) {
+
+    // Stop bubbling.
     e.stopPropagation();
+
+    // Add station.
+    var id = $(event.target).closest('p').data('oid');
+    app.main.currentView.addStation(cache.stations[id]);
+
   },
 
-  // Initialize geolocation features.
-  initialize = function() {
-    if(navigator.geolocation) {
-      $link.on('click', geolocate).parent().show();
+  showNearby = function(stations) {
+
+    // Add nearby station suggestions.
+    $.each(stations, function(i, station) {
+      if(i < 5 || station.rank < 0.25) {
+        app.nearby.currentView.addStation(station);
+      }
+    });
+
+  },
+
+  // Attempt geolocation.
+  geolocate = function() {
+
+    // Enable geolocation.
+    setLocalStorage('disable-geolocation', 'false');
+
+    // Remove existing stations.
+    app.nearby.currentView.collection.reset();
+
+    // Adjust UI.
+    config.els.geolocation.button.hide();
+    config.els.geolocation.container.addClass('loading');
+    config.els.geolocation.container.slideDown();
+
+    // Get current position.
+    getPosition(parsePosition, positionError);
+
+  },
+
+  // Set local storage.
+  setLocalStorage = function(key, value) {
+    if(window.localStorage) {
+      window.localStorage.setItem(key, value);
     }
+  },
+
+  // Get local storage.
+  getLocalStorage = function(key) {
+    return (window.localStorage) ? window.localStorage.getItem(key) : null;
+  },
+
+  // Disable geolacation by user request.
+  disableGeolocation = function() {
+
+    // Hide nearby stations, show button, and store decision.
+    config.els.geolocation.container.slideUp();
+    config.els.geolocation.button.show();
+    setLocalStorage('disable-geolocation', 'true');
+
   },
 
   // Calculate distance between two points.
@@ -173,6 +220,27 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
       return (Math.round(distance * 10) / 10) + ' mi';
     }
     return '';
+  },
+
+  // Initialize geolocation features.
+  initialize = function() {
+
+    if(navigator.geolocation) {
+
+      // Activate UI.
+      config.els.geolocation.button.on('click', geolocate);
+      config.els.geolocation.close.on('click', disableGeolocation);
+      config.els.geolocation.main.on('click', selectNearbyStation);
+
+      // Show geolocation button or start automatically.
+      if(getLocalStorage('disable-geolocation') === 'true') {
+        config.els.geolocation.button.show();
+      } else {
+        config.els.geolocation.button.trigger('click');
+      }
+
+    }
+
   };
 
   // Bind to events.
