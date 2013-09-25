@@ -34,7 +34,8 @@ config.els = {
     warning: $('#warning')
   },
   snapshot: {
-    button: $('#snapshot')
+    button: $('#snapshot'),
+    link: $('#snapshot a')
   },
   suggestions: {
     main: $('#suggestions'),

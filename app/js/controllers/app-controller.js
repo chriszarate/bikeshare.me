@@ -26,8 +26,6 @@ var AppController = Marionette.Controller.extend({
     stations.fetch({reset: true});
 
     // Show/hide UI elements.
-    config.els.snapshot.button.show();
-    config.els.geolocation.container.hide();
     config.els.suggestions.button.show();
 
     app.vent.trigger('suggestions:initialize', cache.stations);
