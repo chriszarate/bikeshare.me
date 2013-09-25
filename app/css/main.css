@@ -460,11 +460,7 @@ p span, p a {
     right: 0.5em;
   }
 
-  .distance {
-    display: block;
-  }
-
-  li p .distance {
+  #stations .distance {
     display: none;
   }
 
