@@ -86,7 +86,10 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
   },
 
   scrollToFit = function() {
-    $('html, body').animate({scrollTop: $(document).height()});
+    var offset = config.els.suggestions.input.offset().top;
+    if(offset > 300) {
+      $('html, body').animate({scrollTop: offset - 100});
+    }
   },
 
   initialize = function(stations) {
