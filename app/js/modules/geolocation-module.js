@@ -12,6 +12,9 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     maximumAge: 0              // ms
   },
 
+  // Internal process indicator.
+  isLocating = false,
+
   // Adapted from
   // https://github.com/gwilson/getAccurateCurrentPosition
   getPosition = function(success, error) {
@@ -49,8 +52,14 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     },
 
     cancelWatch = function() {
+
+      // Clear internal indicator.
+      isLocating = false;
+
+      // Clear watch and timeout.
       navigator.geolocation.clearWatch(watchID);
       clearTimeout(timerID);
+
     },
 
     // Set timeouts that will abandon the location loop.
@@ -134,19 +143,26 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   // Attempt geolocation.
   geolocate = function() {
 
-    // Enable geolocation.
-    setLocalStorage('disable-geolocation', 'false');
+    if(navigator.geolocation && !isLocating) {
 
-    // Remove existing stations.
-    app.nearby.currentView.collection.reset();
+      // Turn on internal indicator.
+      isLocating = true;
 
-    // Adjust UI.
-    config.els.geolocation.button.hide();
-    config.els.geolocation.container.addClass('loading');
-    config.els.geolocation.container.slideDown();
+      // Enable geolocation.
+      setLocalStorage('disable-geolocation', 'false');
 
-    // Get current position.
-    getPosition(parsePosition, positionError);
+      // Remove existing stations.
+      app.nearby.currentView.collection.reset();
+
+      // Adjust UI.
+      config.els.geolocation.button.hide();
+      config.els.geolocation.container.addClass('loading');
+      config.els.geolocation.container.slideDown();
+
+      // Get current position.
+      getPosition(parsePosition, positionError);
+
+    }
 
   },
 
@@ -229,6 +245,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     if(navigator.geolocation) {
 
       // Activate UI.
+      config.els.api.button.on('click', geolocate);
       config.els.geolocation.button.on('click', geolocate);
       config.els.geolocation.close.on('click', disableGeolocation);
       config.els.geolocation.main.on('click', selectNearbyStation);
@@ -237,7 +254,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
       if(getLocalStorage('disable-geolocation') === 'true') {
         config.els.geolocation.button.show();
       } else {
-        config.els.geolocation.button.trigger('click');
+        geolocate();
       }
 
     }
@@ -246,5 +263,6 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
   // Bind to events.
   app.vent.bind('geolocation:initialize', initialize);
+  app.vent.bind('geolocation:update', geolocate);
 
 });
