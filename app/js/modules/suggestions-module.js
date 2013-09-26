@@ -74,6 +74,10 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   },
 
+  clearQuery = function() {
+    config.els.suggestions.input.typeahead('setQuery', '').blur();
+  },
+
   showUI = function() {
     config.els.suggestions.button.hide();
     config.els.suggestions.main.show();
@@ -115,5 +119,6 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   // Bind to events.
   app.vent.bind('suggestions:initialize', initialize);
+  app.vent.bind('suggestions:close', clearQuery);
 
 });

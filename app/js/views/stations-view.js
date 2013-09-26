@@ -113,6 +113,7 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   },
 
   startDrag: function() {
+    app.vent.trigger('suggestions:close');
     config.jqueryui.dropTarget.show();
     config.els.suggestions.button.hide();
   },
