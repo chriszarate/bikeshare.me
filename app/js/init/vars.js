@@ -1,0 +1,3 @@
+/* Initialize variables */
+
+var config = {};

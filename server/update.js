@@ -126,7 +126,7 @@ parseData = function(data) {
     }
   });
 
-  return 'var config={},cache={"city":"' + cityCode + '","stations":' + JSON.stringify(stations) + '};';
+  return 'var cache={"city":"' + cityCode + '","stations":' + JSON.stringify(stations) + '};';
 
 },
 
