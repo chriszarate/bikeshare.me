@@ -32,12 +32,15 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     checkLocation = function(pos) {
 
       // Ignore the first event because it's sometimes from cache.
-      if(++eventCount > 0) {
+      if(eventCount > 0) {
         if(pos.coords.accuracy <= options.desiredAccuracy) {
           cancelWatch();
           success(pos);
         }
       }
+
+      // Increment event count.
+      eventCount = eventCount + 1;
 
       // Store last-checked position.
       fallback = pos;
