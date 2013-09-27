@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
@@ -162,22 +164,54 @@ module.exports = function(grunt) {
         ],
         dest: 'app/cache.manifest'
       }
+    },
+
+    connect: {
+      server: {
+        options: {
+          port: 8000,
+          base: 'app'
+        }
+      }
+    },
+
+    watch: {
+      html: {
+        tasks: ['manifest'],
+        files: ['index.html']
+      },
+      javascript: {
+        tasks: [
+          'jshint',
+          'concat:app',
+          'uglify:app',
+          'string-replace:fix',
+          'manifest'
+        ],
+        files: [
+          'app/js/**/*.js'
+        ]
+      },
+      css: {
+        tasks: [
+          'cssmin',
+          'manifest'
+        ],
+        files: [
+          'app/css/main.css',
+          'app/css/faq.css'
+        ]
+      }
     }
+
   });
 
-  // Load tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jst');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-string-replace');
-  grunt.loadNpmTasks('grunt-manifest');
-
+  // Register tasks.
   grunt.registerTask('default', ['concat:app', 'jshint', 'uglify:app', 'string-replace:fix', 'cssmin', 'manifest']);
   grunt.registerTask('setup', ['templates', 'components', 'stations']);
   grunt.registerTask('templates', ['jst']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
+  grunt.registerTask('dev', ['default', 'connect', 'watch']);
 
   grunt.registerTask('stations', function () {
     grunt.util.spawn({
