@@ -103,6 +103,7 @@ module.exports = function(grunt) {
         },
         files: {
           'app/build/app.min.js': [
+            'app/js/init/*.js',
             'app/js/config/*.js',
             'app/js/templates/*.js',
             'app/js/models/*.js',
