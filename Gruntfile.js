@@ -177,13 +177,30 @@ module.exports = function(grunt) {
 
     watch: {
       html: {
+        options: {
+          livereload: true
+        },
         tasks: ['manifest'],
-        files: ['index.html']
+        files: ['app/index.html']
+      },
+      templates: {
+        options: {
+          livereload: true
+        },
+        tasks: [
+          'templates'
+        ],
+        files: [
+          'app/js/templates/*.js'
+        ]
       },
       javascript: {
+        options: {
+          livereload: true
+        },
         tasks: [
-          'jshint',
           'concat:app',
+          'jshint',
           'uglify:app',
           'string-replace:fix',
           'manifest'
@@ -193,6 +210,9 @@ module.exports = function(grunt) {
         ]
       },
       css: {
+        options: {
+          livereload: true
+        },
         tasks: [
           'cssmin',
           'manifest'
