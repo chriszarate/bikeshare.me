@@ -1,3 +1,3 @@
 /* Initialize variables */
 
-var config = {};
+var app, config = {};

@@ -1,7 +1,7 @@
 /* App */
 
 // Create the app.
-var app = new Backbone.Marionette.Application();
+app = new Backbone.Marionette.Application();
 
 // Define regions.
 app.addRegions({
