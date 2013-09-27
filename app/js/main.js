@@ -1,10 +1,3 @@
-/*
- * BikeShare.me v0.1.4
- * Chris Zarate
- * http://github.com/chriszarate/bikeshare.me
- */
-
-
 /* Main */
 
 // Prefetch availability data.
