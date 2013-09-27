@@ -45,7 +45,7 @@ var StationView = Backbone.Marionette.ItemView.extend({
   },
 
   nextColor: function() {
-    if(!this.model._static) {
+    if(this.options.editable) {
       this.model.nextColor();
     }
   },

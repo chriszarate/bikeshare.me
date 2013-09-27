@@ -3,6 +3,7 @@
 var StationsView = Backbone.Marionette.CollectionView.extend({
 
   itemView: StationView,
+
   tagName: 'ul',
 
   events: {
@@ -16,11 +17,14 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
     // Listen to events.
     this.listenTo(this.collection, 'reset', this.updateAvailability);
     this.listenTo(this.collection, 'add', this.updateStation);
-    this.listenTo(this.collection, 'add remove change reset', this.createSnapshot);
+    this.listenTo(this.collection, 'add remove change sort reset', this.createSnapshot);
 
     // Activate dragging and dropping.
     if(this.options.editable) {
       this.startDragDrop();
+      this.itemViewOptions = {
+        editable: true
+      };
     }
 
   },
@@ -44,7 +48,6 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
     // Save model as needed.
     if(this.options.editable) {
-      model._static = false;
       model.save();
     }
 
@@ -145,7 +148,6 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
 
     // Resort and create snapshot.
     this.collection.sort();
-    this.createSnapshot();
 
   }
 
