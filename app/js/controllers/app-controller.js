@@ -23,7 +23,7 @@ var AppController = Marionette.Controller.extend({
     );
 
     // Fetch stations from local storage.
-    stations.fetch({reset: true});
+    stations.fetch();
 
     // Show/hide UI elements.
     config.els.suggestions.button.show();
