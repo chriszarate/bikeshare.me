@@ -203,7 +203,7 @@ module.exports = function(grunt) {
           'templates'
         ],
         files: [
-          'app/js/templates/*.js'
+          'app/js/templates/*.tmpl'
         ]
       },
       javascript: {
@@ -243,6 +243,8 @@ module.exports = function(grunt) {
     'default',
     [
       'concat:app',
+      'jshint',
+      'jst',
       'uglify:app',
       'string-replace:fix',
       'cssmin',
@@ -250,8 +252,7 @@ module.exports = function(grunt) {
     ]
   );
 
-  grunt.registerTask('setup', ['templates', 'components', 'stations']);
-  grunt.registerTask('templates', ['jst']);
+  grunt.registerTask('setup', ['components', 'stations']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
   grunt.registerTask('dev', ['default', 'connect', 'watch']);
 
