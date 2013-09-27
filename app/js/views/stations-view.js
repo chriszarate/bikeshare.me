@@ -61,7 +61,7 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   },
 
   updateAvailability: function() {
-    app.vent.trigger('api:update:soft');
+    app.vent.trigger('api:update:populate');
   },
 
   populateAvailability: function(stationData) {

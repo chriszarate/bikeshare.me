@@ -41,7 +41,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     if(data.ok) {
 
       // Debug.
-      if(config.debug) {
+      if(config.api.debug) {
         console.log(data);
       }
 
@@ -82,18 +82,14 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   },
 
   // Update station availability.
-  updateAvailability = function(e) {
+  updateAvailability = function() {
 
     // Request update.
-    fetchUpdate(false);
+    fetchUpdate();
 
     // Send event triggers.
     app.vent.trigger('messages:reset');
     populateAvailability();
-
-    // Stop propagation.
-    e.preventDefault();
-    e.stopPropagation();
 
   },
 
@@ -124,7 +120,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   config.els.api.button.on('click', updateAvailability);
 
   // Bind to events.
-  app.vent.bind('api:update:bootstrap', fetchUpdate);
-  app.vent.bind('api:update:soft', populateAvailability);
+  app.vent.bind('api:update:fetch', fetchUpdate);
+  app.vent.bind('api:update:populate', populateAvailability);
 
 });
