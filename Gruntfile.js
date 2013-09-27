@@ -62,7 +62,6 @@ module.exports = function(grunt) {
             'Marionette': true,
             'Base62': true,
             'JST': true,
-            'config': true,
             'cache': true
           },
           browser: true,
@@ -121,6 +120,7 @@ module.exports = function(grunt) {
         options: {
           // Cannot use banner with source map (grunt-contrib-uglify #22).
           // banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n',
+          preserveComments: 'some',
           sourceMap: 'app/build/app.js.map',
           sourceMapRoot: '/',
           sourceMapPrefix: 1,
@@ -128,6 +128,7 @@ module.exports = function(grunt) {
         },
         files: {
           'app/build/app.min.js': [
+            'app/js/banner.txt',
             'app/js/init/*.js',
             'app/js/config/*.js',
             'app/js/templates/*.js',
