@@ -31,7 +31,7 @@ replacements = [
   ['Place', 'Pl'],
   ['Square', 'Sq'],
   [' - ', '—'],
-  ["'", '’']
+  ['\'', '’']
 ],
 
 // Provide alternate names for some stations.
@@ -72,6 +72,82 @@ alternateNames = {
   '505': 'Hearld Sq'
 },
 
+makeOrdinals = function(match, submatch) {
+
+  var lastChar = submatch[submatch.length - 1],
+      irregular = ['11', '12', '13'],
+      ordinal = 'th';
+
+  if(irregular.indexOf(submatch) === -1) {
+    if(lastChar === '1') {
+      ordinal = 'st';
+    }
+    if(lastChar === '2') {
+      ordinal = 'nd';
+    }
+    if(lastChar === '3') {
+      ordinal = 'rd';
+    }
+  }
+
+  return match.replace(submatch, submatch + ordinal);
+
+},
+
+makeReplacements = function(str) {
+
+  // Replacements
+  replacements.forEach(function(replacement) {
+    var regex = new RegExp(replacement[0], 'g');
+    str = str.replace(regex, replacement[1]);
+  });
+
+  // Ordinals :/
+  str = str.replace(/([0-9]+) /g, makeOrdinals);
+  str = str.replace(/([0-9]+)$/, makeOrdinals);
+
+  return str;
+
+},
+
+// Parse response.
+parseData = function(data) {
+
+  // Parse data as JSON.
+  var obj = JSON.parse(data),
+
+  // New target object.
+  stations = {};
+
+  obj.stationBeanList.forEach(function(station) {
+
+    if(!station.testStation) {
+
+      var title = makeReplacements(station.stationName),
+
+      stationData = {
+        id: station.id,
+        title: title,
+        alt: alternateNames[station.id] || false,
+        lat: station.latitude,
+        lng: station.longitude
+      };
+
+      // Delete alternate name property if empty.
+      if(!stationData.alt) {
+        delete stationData.alt;
+      }
+
+      stations[station.id] = stationData;
+
+    }
+
+  });
+
+  return 'var cache={"city":"' + cityCode + '","stations":' + JSON.stringify(stations) + '};';
+
+},
+
 // Process HTTP response.
 getData = function(res) {
 
@@ -99,72 +175,6 @@ getData = function(res) {
   } else {
     console.log(res.statusCode);
   }
-
-},
-
-// Parse response.
-parseData = function(data) {
-
-  // Parse data as JSON.
-  var obj = JSON.parse(data),
-
-  // New target object.
-  stations = {};
-
-  obj.stationBeanList.forEach(function(station) {
-    if(!station.testStation) {
-      var title = makeReplacements(station.stationName),
-      stationData = {
-        id: station.id,
-        title: title,
-        alt: alternateNames[station.id] || false,
-        lat: station.latitude,
-        lng: station.longitude
-      };
-      stationData.alt || delete stationData.alt;
-      stations[station.id] = stationData;
-    }
-  });
-
-  return 'var cache={"city":"' + cityCode + '","stations":' + JSON.stringify(stations) + '};';
-
-},
-
-makeReplacements = function(str) {
-
-  // Replacements
-  replacements.forEach(function(replacement) {
-    var regex = new RegExp(replacement[0], 'g');
-    str = str.replace(regex, replacement[1]);
-  });
-
-  // Ordinals :/
-  str = str.replace(/([0-9]+) /g, makeOrdinals);
-  str = str.replace(/([0-9]+)$/, makeOrdinals);
-
-  return str;
-
-},
-
-makeOrdinals = function(match, submatch) {
-
-  var lastChar = submatch[submatch.length - 1],
-      irregular = ['11', '12', '13'],
-      ordinal = 'th';
-
-  if(irregular.indexOf(submatch) === -1) {
-    if(lastChar === '1') {
-      ordinal = 'st';
-    }
-    if(lastChar === '2') {
-      ordinal = 'nd';
-    }
-    if(lastChar === '3') {
-      ordinal = 'rd';
-    }
-  }
-
-  return match.replace(submatch, submatch + ordinal);
 
 };
 

@@ -88,6 +88,31 @@ module.exports = function(grunt) {
         files: {
           src: ['app/build/app.js']
         }
+      },
+      server: {
+        options: {
+          camelcase: true,
+          curly: true,
+          devel: true,
+          eqeqeq: true,
+          forin: true,
+          immed: true,
+          indent: 2,
+          latedef: true,
+          newcap: true,
+          noarg: true,
+          node: true,
+          noempty: true,
+          plusplus: true,
+          quotmark: true,
+          strict: false,
+          trailing: true,
+          undef: true,
+          unused: true
+        },
+        files: {
+          src: ['server/update.js']
+        }
       }
     },
 
