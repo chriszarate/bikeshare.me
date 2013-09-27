@@ -145,25 +145,36 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
     if(navigator.geolocation && !isLocating) {
 
-      // Turn on internal indicator.
-      isLocating = true;
+      if(getLocalStorage('disable-geolocation') === 'true') {
 
-      // Enable geolocation.
-      setLocalStorage('disable-geolocation', 'false');
+        // Show geolocation button.
+        config.els.geolocation.button.show();
 
-      // Remove existing stations.
-      app.nearby.currentView.collection.reset();
+      } else {
 
-      // Adjust UI.
-      config.els.geolocation.button.hide();
-      config.els.geolocation.container.addClass('loading');
-      config.els.geolocation.container.slideDown();
+        // Turn on internal indicator.
+        isLocating = true;
 
-      // Get current position.
-      getPosition(parsePosition, positionError);
+        // Remove existing stations.
+        app.nearby.currentView.collection.reset();
+
+        // Adjust UI.
+        config.els.geolocation.button.hide();
+        config.els.geolocation.container.addClass('loading');
+        config.els.geolocation.container.slideDown();
+
+        // Get current position.
+        getPosition(parsePosition, positionError);
+
+      }
 
     }
 
+  },
+
+  retryGeolocation = function() {
+    setLocalStorage('disable-geolocation', 'false');
+    geolocate();
   },
 
   // Set local storage.
@@ -246,16 +257,12 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
       // Activate UI.
       config.els.api.button.on('click', geolocate);
-      config.els.geolocation.button.on('click', geolocate);
+      config.els.geolocation.button.on('click', retryGeolocation);
       config.els.geolocation.close.on('click', disableGeolocation);
       config.els.geolocation.main.on('click', selectNearbyStation);
 
-      // Show geolocation button or start automatically.
-      if(getLocalStorage('disable-geolocation') === 'true') {
-        config.els.geolocation.button.show();
-      } else {
-        geolocate();
-      }
+      // Geolocate.
+      geolocate();
 
     }
 
