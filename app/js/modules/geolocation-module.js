@@ -12,6 +12,14 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     maximumAge: 0              // ms
   },
 
+  // Warnings and error messages.
+  messages = {
+    standard: 'Nearby',
+    unusable: 'Your location cannot be found within %str% ft.',
+    inaccurate: 'Your location is accurate to about %str% ft.',
+    error: 'Unable to find your location.'
+  },
+
   // Internal process indicator.
   isLocating = false,
 
@@ -105,14 +113,12 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     // Warn user if location is inaccurate.
     if(pos) {
       if(pos.coords.accuracy > options.acceptableAccuracy) {
-        app.vent.trigger('messages:warn', 'Your location cannot be found within ' + Math.round(options.acceptableAccuracy * 3.28084) + ' ft.');
+        showMessage(messages.unusable, mToFt(options.acceptableAccuracy));
       } else if(pos.coords.accuracy > options.warnableAccuracy) {
-        app.vent.trigger('messages:warn', 'Your location is accurate to about ' + Math.round(pos.coords.accuracy * 3.28084) + ' ft.');
+        showMessage(messages.inaccurate, mToFt(pos.coords.accuracy));
       }
     } else {
-      config.els.geolocation.container.slideUp();
-      setLocalStorage('disable-geolocation', 'true');
-      app.vent.trigger('messages:error', 'Could not determine your location.');
+      showMessage(messages.error);
     }
 
   },
@@ -140,6 +146,14 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
   },
 
+  // Show warning or error message.
+  showMessage = function(message, replacement) {
+    if(replacement) {
+      message = message.replace('%str%', replacement);
+    }
+    config.els.geolocation.message.html(message).slideDown();
+  },
+
   // Attempt geolocation.
   geolocate = function() {
 
@@ -159,6 +173,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
         app.nearby.currentView.collection.reset();
 
         // Adjust UI.
+        showMessage(messages.standard);
         config.els.geolocation.button.hide();
         config.els.geolocation.container.addClass('loading');
         config.els.geolocation.container.slideDown();
@@ -236,6 +251,11 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     // round the results down to the nearest 1/1000
     return Math.round(dm * 1000) / 1000;
 
+  },
+
+  // Convert meters to feet.
+  mToFt = function(m) {
+    return Math.round(m * 3.28084);
   },
 
   // Format the distance in conversational terms.

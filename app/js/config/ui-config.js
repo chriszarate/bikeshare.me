@@ -27,7 +27,8 @@ config.els = {
     main: $('#nearby-stations'),
     container: $('#nearby'),
     button: $('#geolocate'),
-    close: $('#nearby .close-button')
+    close: $('#nearby .close-button'),
+    message: $('#nearby h3')
   },
   messages: {
     error: $('#error'),

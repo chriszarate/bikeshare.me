@@ -204,7 +204,6 @@ h1 span.tld {
   padding: 0.5em;
   color: #333;
   background-color: #fcc;
-  border-bottom: solid 1px #ebb;
   font-size: 0.8em;
   font-weight: bold;
   text-align: center;
@@ -212,7 +211,6 @@ h1 span.tld {
 
 #warning {
   background-color: #ffd;
-  border-bottom: solid 1px #eed;
 }
 
 
@@ -225,7 +223,7 @@ h1 span.tld {
 
 #nearby h3 {
   margin: 0;
-  padding: 0.5em 0.55em;
+  padding: 0.4em 2em 0.5em 0.55em;
   color: #333;
   background-color: #fff;
   background-position: 0.25em 50%;
