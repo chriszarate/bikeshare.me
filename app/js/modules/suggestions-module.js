@@ -47,7 +47,7 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     app.main.currentView.addStation(datum);
 
     // Clear input form.
-    $(this).typeahead('setQuery', '');
+    $(this).typeahead('setQuery', '').blur();
 
   },
 
