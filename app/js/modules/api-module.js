@@ -102,7 +102,9 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     if(updatePromise) {
       updatePromise.then(function() {
         app.main.currentView.populateAvailability(cache.stations);
-        app.nearby.currentView.populateAvailability(cache.stations);
+        if(app.nearby.currentView) {
+          app.nearby.currentView.populateAvailability(cache.stations);
+        }
       });
     }
   },
