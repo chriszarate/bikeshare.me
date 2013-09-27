@@ -6,51 +6,20 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    jshint: {
-      app: {
-        options: {
-          globals: {
-            '$': true,
-            '_': true,
-            'Backbone': true,
-            'Marionette': true,
-            'Base62': true,
-            'JST': true,
-            'config': true,
-            'cache': true,
-            'console': true
-          },
-          browser: true,
-          curly: true,
-          eqeqeq: true,
-          forin: true,
-          indent: 2,
-          noarg: true,
-          strict: false,
-          trailing: true,
-          undef: true,
-          unused: true
-        },
-        files: {
-          src: ['app/build/app.js']
-        }
-      }
-    },
-
-    jst: {
-      templates: {
-        files: {
-          'app/js/templates/compiled-templates.js': [
-            'app/js/templates/*.tmpl'
-          ]
-        }
-      }
-    },
-
     concat: {
       app: {
+        options: {
+          banner:
+            '/*!\n' +
+            ' * <%= pkg.name %> v<%= pkg.version %>\n' +
+            ' * <%= pkg.author.name %>\n' +
+            ' * <%= pkg.repository.url %>\n' +
+            ' * License: <%= pkg.license %>\n' +
+            ' */\n\n'
+        },
         files: {
           'app/build/app.js': [
+            'app/js/init/*.js',
             'app/js/config/*.js',
             'app/js/models/*.js',
             'app/js/views/*.js',
@@ -84,10 +53,42 @@ module.exports = function(grunt) {
       }
     },
 
+    jshint: {
+      app: {
+        options: {
+          globals: {
+            '_': true,
+            'Backbone': true,
+            'Marionette': true,
+            'Base62': true,
+            'JST': true,
+            'config': true,
+            'cache': true
+          },
+          browser: true,
+          curly: true,
+          devel: true,
+          eqeqeq: true,
+          forin: true,
+          indent: 2,
+          jquery: true,
+          noarg: true,
+          strict: false,
+          trailing: true,
+          undef: true,
+          unused: true
+        },
+        files: {
+          src: ['app/build/app.js']
+        }
+      }
+    },
+
     uglify: {
       app: {
         options: {
-          banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n',
+          // Cannot use banner with source map (grunt-contrib-uglify #22).
+          // banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n',
           sourceMap: 'app/build/app.js.map',
           sourceMapRoot: '/',
           sourceMapPrefix: 1,
@@ -116,6 +117,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // Fix Uglify's inability to cope with a subdirectory webroot.
     "string-replace": {
       fix: {
         files: {
@@ -138,6 +140,16 @@ module.exports = function(grunt) {
           ],
           'app/css/faq.min.css': [
             'app/css/faq.css'
+          ]
+        }
+      }
+    },
+
+    jst: {
+      templates: {
+        files: {
+          'app/js/templates/compiled-templates.js': [
+            'app/js/templates/*.tmpl'
           ]
         }
       }
@@ -227,7 +239,17 @@ module.exports = function(grunt) {
   });
 
   // Register tasks.
-  grunt.registerTask('default', ['concat:app', 'jshint', 'uglify:app', 'string-replace:fix', 'cssmin', 'manifest']);
+  grunt.registerTask(
+    'default',
+    [
+      'concat:app',
+      'uglify:app',
+      'string-replace:fix',
+      'cssmin',
+      'manifest'
+    ]
+  );
+
   grunt.registerTask('setup', ['templates', 'components', 'stations']);
   grunt.registerTask('templates', ['jst']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
