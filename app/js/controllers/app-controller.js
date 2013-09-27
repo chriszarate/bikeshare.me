@@ -23,7 +23,7 @@ var AppController = Marionette.Controller.extend({
     );
 
     // Fetch stations from local storage.
-    stations.fetch();
+    stations.fetch().then(this.update);
 
     // Show/hide UI elements.
     config.els.suggestions.button.show();
@@ -58,7 +58,6 @@ var AppController = Marionette.Controller.extend({
       );
 
       stations.reset(snapshot);
-      app.vent.trigger('api:update', false);
 
       // Show/hide UI elements.
       config.els.geolocation.container.hide();
@@ -70,6 +69,10 @@ var AppController = Marionette.Controller.extend({
       this.error();
     }
 
+  },
+
+  update: function() {
+    app.vent.trigger('api:update:populate');
   },
 
   error: function() {
