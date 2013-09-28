@@ -48,8 +48,10 @@ Note that Bikeshare.me is expected to run at the site root.
 You should periodically update the station data since stations are occasionally added, removed, or moved. Run this using your favorite cron tool:
 
 ```
-node /path/to/bikeshare/server/update.js
+node /path/to/bikeshare.me/server/update.js
 ```
+
+You may also want to use my customization to Typeahead.js that ranks stations by distance. Read my comments in `app/js/lib/dataset.js` for more information.
 
 ## License
 

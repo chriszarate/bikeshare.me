@@ -6,8 +6,16 @@
 
 // This is a replacement 'dataset.js' for typeahead.js 0.9.2 that allows for
 // ranking suggestions by a datum property. Replace the stock file in 'src'
-// and rebuild using Grunt. Future releases may allow for this out of the box
-// and any new version could break this hack.
+// and rebuild using Grunt:
+//   cd app/bower_components/typeahead.js
+//   cp app/js/lib/dataset.js src
+//   npm install
+//   bower install
+//   grunt
+//   cd ../../
+//   grunt components
+// Future releases may allow for this out of the box and any new version could
+// break this hack.
 
 var Dataset = (function() {
   var keys = {
