@@ -8,7 +8,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     desiredAccuracy: 20,       // m
     warnableAccuracy: 76.2,    // m
     acceptableAccuracy: 152.4, // m
-    timeout: 2000,             // ms
+    timeout: 5000,             // ms
     maximumAge: 0              // ms
   },
 
