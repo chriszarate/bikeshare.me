@@ -12,12 +12,14 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     maximumAge: 0              // ms
   },
 
-  // Warnings and error messages.
+  // Information, warnings, and error messages.
   messages = {
     standard: 'Nearby',
     unusable: 'Your location cannot be found within %str% ft.',
     inaccurate: 'Your location is accurate to about %str% ft.',
-    error: 'Unable to find your location.'
+    error: 'Unable to find your location.',
+    errorPermission: 'Permission to find your location was denied.',
+    errorTimeout: 'The location request timed out.'
   },
 
   // Internal process indicator.
@@ -47,7 +49,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
     },
 
-    stopTrying = function() {
+    stopTrying = function(err) {
 
       // Clear the watch.
       cancelWatch();
@@ -58,7 +60,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
       }
 
       // Potentially warn the user of a level of inaccuracy.
-      error(fallback);
+      error(fallback, err);
 
     },
 
@@ -108,7 +110,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
   },
 
-  positionError = function(pos) {
+  positionError = function(pos, err) {
 
     // Hide loading indicator.
     config.els.geolocation.container.removeClass('loading');
@@ -121,7 +123,22 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
         showMessage(messages.inaccurate, mToFt(pos.coords.accuracy));
       }
     } else {
-      showMessage(messages.error);
+      // Show specific error messages.
+      if(err && err.code) {
+        switch(err.code) {
+        case err.PERMISSION_DENIED:
+          showMessage(messages.errorPermission);
+          break;
+        case err.TIMEOUT:
+          showMessage(messages.errorTimeout);
+          break;
+        default:
+          showMessage(messages.error);
+          break;
+        }
+      } else {
+        showMessage(messages.error);
+      }
     }
 
   },
