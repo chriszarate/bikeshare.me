@@ -160,7 +160,9 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     // Add nearby station suggestions.
     $.each(stations, function(i, station) {
       if(i < 5 || station.rank < 0.25) {
-        app.nearby.currentView.addStation(station);
+        app.nearby.currentView.addStation($.extend({}, station, {
+          distance: formatDistance(station.rank, true)
+        }));
       }
     });
 
@@ -279,13 +281,16 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   },
 
   // Format the distance in conversational terms.
-  formatDistance = function(distance) {
+  formatDistance = function(distance, showLongDistances) {
     if(distance <= 0.12) {
       // Round short distances to the nearest ten feet.
       return (Math.round(distance * 5280 / 10) * 10) + ' ft';
-    } else if(distance < 1) {
-      // Round distances less than a mile to the nearest tenth of a mile.
+    } else if(distance < 1 || (showLongDistances && distance < 6)) {
+      // Round medium distances to the nearest tenth of a mile.
       return (Math.round(distance * 10) / 10) + ' mi';
+    } else if(showLongDistances) {
+      // Round farther distances to the nearest mile.
+      return Math.round(distance) + ' mi';
     }
     return '';
   },
