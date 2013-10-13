@@ -54,8 +54,28 @@ module.exports = function(grunt) {
     },
 
     jshint: {
+      options: {
+        camelcase: true,
+        curly: true,
+        devel: true,
+        eqeqeq: true,
+        forin: true,
+        immed: true,
+        indent: 2,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        noempty: true,
+        plusplus: true,
+        quotmark: true,
+        strict: false,
+        trailing: true,
+        undef: true,
+        unused: true
+      },
       app: {
         options: {
+          browser: true,
           globals: {
             '_': true,
             'Backbone': true,
@@ -64,25 +84,7 @@ module.exports = function(grunt) {
             'JST': true,
             'cache': true
           },
-          browser: true,
-          camelcase: true,
-          curly: true,
-          devel: true,
-          eqeqeq: true,
-          forin: true,
-          immed: true,
-          indent: 2,
-          latedef: true,
-          jquery: true,
-          newcap: true,
-          noarg: true,
-          noempty: true,
-          plusplus: true,
-          quotmark: true,
-          strict: false,
-          trailing: true,
-          undef: true,
-          unused: true
+          jquery: true
         },
         files: {
           src: ['app/build/app.js']
@@ -90,24 +92,7 @@ module.exports = function(grunt) {
       },
       server: {
         options: {
-          camelcase: true,
-          curly: true,
-          devel: true,
-          eqeqeq: true,
-          forin: true,
-          immed: true,
-          indent: 2,
-          latedef: true,
-          newcap: true,
-          noarg: true,
-          node: true,
-          noempty: true,
-          plusplus: true,
-          quotmark: true,
-          strict: false,
-          trailing: true,
-          undef: true,
-          unused: true
+          node: true
         },
         files: {
           src: ['server/update.js']
