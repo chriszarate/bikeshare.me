@@ -183,7 +183,7 @@ module.exports = function(grunt) {
             'http://themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff'
           ],
           network: ['*'],
-          fallback: ['/ /index.html'],
+          fallback: ['/ /'],
           verbose: true,
           timestamp: true
         },
