@@ -6,11 +6,11 @@ var AppController = Marionette.Controller.extend({
 
     // Set city code.
     if(!config.city) {
-    config.city = 'nyc',
+      config.city = 'nyc';
     }
 
     // Create new stations collection.
-    stations = new Stations();
+    var stations = new Stations();
 
     // Append view for saved stations.
     app.main.show(
@@ -44,7 +44,7 @@ var AppController = Marionette.Controller.extend({
     var snapshot = app.snapshot.decode(str);
 
     // Set city code.
-    config.city = city,
+    config.city = city;
 
     // Proceed if valid.
     if(snapshot.length) {
