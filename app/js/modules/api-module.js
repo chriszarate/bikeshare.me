@@ -6,7 +6,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   var updatePromise = false,
 
   // API endpoint.
-  apiEndpoints = config.api[cache.city],
+  apiEndpoints = config.api[config.city],
 
   // Request availablility data.
   fetchUpdate = function(bootstrap) {

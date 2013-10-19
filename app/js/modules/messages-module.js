@@ -59,7 +59,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Update the "share a snapshot" link.
   updateSnapshotLink = function(link) {
-    config.els.snapshot.link.attr('href', '/' + cache.city + '/' + link);
+    config.els.snapshot.link.attr('href', '/' + config.city + '/' + link);
     config.els.snapshot.button.toggle(Boolean(link));
   };
 
