@@ -88,14 +88,6 @@ module.exports = function(grunt) {
         files: {
           src: ['app/build/app.js']
         }
-      },
-      server: {
-        options: {
-          node: true
-        },
-        files: {
-          src: ['server/update.js']
-        }
       }
     },
 
