@@ -83,8 +83,6 @@ var Station = Backbone.Model.extend({
 var Stations = Backbone.Collection.extend({
 
   model: Station,
-  localStorage: new Backbone.LocalStorage(config.city + '-stations'),
-
   comparator: 'order',
 
   nextOrder: function() {

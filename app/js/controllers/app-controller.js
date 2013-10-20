@@ -60,6 +60,9 @@ var AppController = Marionette.Controller.extend({
     // Create new stations collection.
     var stations = new Stations();
 
+    // Set local storage for the collection.
+    stations.localStorage = new Backbone.LocalStorage(config.city + '-stations');
+
     // Append view for saved stations.
     app.main.show(
       new StationsView({
