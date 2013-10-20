@@ -269,16 +269,8 @@ module.exports = function(grunt) {
     ]
   );
 
-  grunt.registerTask('setup', ['components', 'stations']);
+  grunt.registerTask('setup', ['components']);
   grunt.registerTask('components', ['uglify:components', 'concat:components']);
   grunt.registerTask('dev', ['default', 'connect', 'watch']);
-
-  grunt.registerTask('stations', function () {
-    grunt.util.spawn({
-      cmd: process.argv[0],
-      args: ['server/update.js']
-    });
-    console.log('File "app/build/stations.js" created.');
-  });
 
 };

@@ -36,7 +36,7 @@ cd bikeshare && npm install
 # Install Bower dependencies.
 cd app && bower install
 
-# Compile templates, uglify dependencies, and fetch latest station data.
+# Uglify dependencies.
 grunt setup
 
 # Uglify local code, minify CSS, generate HTML5 cache manifest, etc.
@@ -45,13 +45,7 @@ grunt default
 
 Note that Bikeshare.me is expected to run at the site root.
 
-You should periodically update the station data since stations are occasionally added, removed, or moved. Run this using your favorite cron tool:
-
-```
-node /path/to/bikeshare.me/server/update.js
-```
-
-You may also want to use my customization to Typeahead.js that ranks stations by distance. Read my comments in `app/js/lib/dataset.js` for more information.
+You may want to use my customization to Typeahead.js v0.9.2 that ranks stations by distance. Read my comments in `app/js/lib/dataset.js` for more information.
 
 ## License
 
