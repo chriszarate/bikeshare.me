@@ -8,25 +8,20 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   // Request availablility data.
   fetchUpdate = function() {
 
-    // Create promise.
-    updatePromise = new $.Deferred();
-
     // Hide existing availability information.
     $('.bikes, .docks').hide();
 
     // Fetch API response.
-    $.ajax({
+    updatePromise = $.ajax({
       url: config.api[config.city].apiBaseURL + config.api[config.city].apiUpdatePath,
       dataType: 'jsonp',
       timeout: 5000
-    }).done(function(data) {
-      updatePromise.resolve(data);
-    }).fail(function() {
+    })
+    .then(parseData)
+    .then(populateAvailability)
+    .fail(function() {
       app.vent.trigger('messages:api:error', 'Could not connect to the server.');
     });
-
-    // Parse response.
-    updatePromise.then(parseData);
 
   },
 
@@ -84,19 +79,14 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
     // Send event triggers.
     app.vent.trigger('messages:reset');
-    populateAvailability();
 
   },
 
   // Send availability data to stations view.
   populateAvailability = function() {
-    if(updatePromise) {
-      updatePromise.then(function() {
-        app.main.currentView.populateAvailability(config.stations.list);
-        if(app.nearby.currentView) {
-          app.nearby.currentView.populateAvailability(config.stations.list);
-        }
-      });
+    app.main.currentView.populateAvailability(config.stations.list);
+    if(app.nearby.currentView) {
+      app.nearby.currentView.populateAvailability(config.stations.list);
     }
   },
 

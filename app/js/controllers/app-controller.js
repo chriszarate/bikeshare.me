@@ -86,7 +86,6 @@ var AppController = Marionette.Controller.extend({
 
     // Send triggers to app modules.
     app.vent.trigger('api:update:fetch');
-    app.vent.trigger('api:update:populate');
     app.vent.trigger('suggestions:initialize', config.stations.list);
     app.vent.trigger('geolocation:initialize');
 
@@ -128,7 +127,6 @@ var AppController = Marionette.Controller.extend({
 
       // Send triggers to app modules.
       app.vent.trigger('api:update:fetch');
-      app.vent.trigger('api:update:populate');
 
     } else {
       app.vent.trigger('messages:error', 'Could not load snapshot.');
