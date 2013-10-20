@@ -10,11 +10,8 @@ var http = require('http'),
 // Options for HTTP request.
 apiURL = 'http://citibikenyc.com/stations/json',
 
-// City code.
-cityCode = 'nyc',
-
 // File name for API cache.
-outputCache = path.resolve(__dirname, '../app/build/stations.js'),
+outputCache = path.resolve(__dirname, '../app/build/stations-nyc.js'),
 
 // Standardize abbreviations and grammar.
 replacements = [
@@ -144,7 +141,7 @@ parseData = function(data) {
 
   });
 
-  return 'var cache={"city":"' + cityCode + '","stations":' + JSON.stringify(stations) + '};';
+  return JSON.stringify(stations);
 
 },
 
