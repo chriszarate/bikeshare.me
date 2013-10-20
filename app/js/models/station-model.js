@@ -5,7 +5,7 @@ var Station = Backbone.Model.extend({
   // Set defaults.
   defaults: function() {
     return {
-      title: 'Unknown',
+      title: 'Loading',
       color: 0,
       order: this.collection.nextOrder()
     };
@@ -48,9 +48,9 @@ var Station = Backbone.Model.extend({
   // Get the title of the station.
   getTitle: function() {
     // Use updated station data, if available.
-    // Fallback to locally stored title or a shrug.
+    // Fallback to a shrug.
     return {
-      title: (config.stations.list[this.id]) ? config.stations.list[this.id].title : this.get('title') || 'Unknown (' + this.id + ')'
+      title: (config.stations && config.stations[this.id]) ? config.stations[this.id].title : this.get('title')
     };
   },
 

@@ -4,61 +4,11 @@ var AppController = Marionette.Controller.extend({
 
   home: function() {
 
-    // Load station data.
-    this.loadStations('nyc', this.showHome);
-
-  },
-
-  share: function(city, str) {
-
-    // Store snapshot.
-    config.snapshot = str;
-
-    // Load station data.
-    this.loadStations(city, this.showSnapshot);
-
-  },
-
-  error: function() {
-    Backbone.history.navigate('', true);
-    app.vent.trigger('messages:error', 'Could not process your request.');
-  },
-
-  loadStations: function(city, callback) {
-
-    // Cache stations list.
-    var cacheStations = function(data) {
-      config.stations.list = config.stations[city].list = data;
-    };
-
-    // Check for valid city.
-    if(config.stations[city]) {
-
-      // Store city.
-      config.city = city;
-
-      // Get stations list or use already loaded one.
-      if(!config.stations[city].list) {
-        $.getJSON(config.stations[city].url)
-          .fail(function() {
-            app.vent.trigger('messages:error', 'Could not load station list.');
-          })
-          .done(cacheStations)
-          .done(callback);
-      } else {
-        callback();
-      }
-
-    } else {
-      app.vent.trigger('messages:error', 'Unknown city.');
-    }
-
-  },
-
-  showHome: function() {
-
     // Create new stations collection.
     var stations = new Stations();
+
+    // Set city.
+    this.setCity('nyc');
 
     // Set local storage for the collection.
     stations.localStorage = new Backbone.LocalStorage(config.city + '-stations');
@@ -85,29 +35,23 @@ var AppController = Marionette.Controller.extend({
     config.els.suggestions.button.show();
 
     // Send triggers to app modules.
-    app.vent.trigger('api:update:fetch');
-    app.vent.trigger('suggestions:initialize', config.stations.list);
-    app.vent.trigger('geolocation:initialize');
+    app.vent.trigger('api:update:fetch', true);
 
   },
 
-  showSnapshot: function() {
+  share: function(city, str) {
 
     // Decode request.
-    var snapshot = app.snapshot.decode(config.snapshot);
+    var snapshot = app.snapshot.decode(str);
+
+    // Set city.
+    this.setCity(city);
 
     // Proceed if valid.
     if(snapshot.length) {
 
       // Create new stations collection.
       var stations = new Stations();
-
-      // Get station titles from station list.
-      $.each(snapshot, function(i, datum) {
-        if(config.stations.list[datum.id]) {
-          datum.title = config.stations.list[datum.id].title;
-        }
-      });
 
       // Append new read-only view.
       app.main.show(
@@ -132,6 +76,22 @@ var AppController = Marionette.Controller.extend({
       app.vent.trigger('messages:error', 'Could not load snapshot.');
     }
 
+  },
+
+  setCity: function(city) {
+
+    // Make sure requested city is supported.
+    if(config.api[city]) {
+      config.city = city;
+    } else {
+      app.vent.trigger('messages:error', 'Unsupported city.');
+    }
+
+  },
+
+  error: function() {
+    Backbone.history.navigate('', true);
+    app.vent.trigger('messages:error', 'Could not process your request.');
   }
 
 });

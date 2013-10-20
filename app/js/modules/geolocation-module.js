@@ -87,29 +87,34 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   // Parse position returned from navigator.geolocation.
   parsePosition = function(pos) {
 
-    // Hide loading indicator.
-    config.els.geolocation.container.removeClass('loading');
-
     // Format coordinates for helper function.
     var coordinates = {
       lat: pos.coords.latitude,
       lng: pos.coords.longitude
     };
 
-    // Loop through stations and add location data.
-    $.each(config.stations.list, function(i, station) {
-      station.rank = calculateDistance(station, coordinates);
-      station.distance = formatDistance(station.rank);
+    // Hide loading indicator.
+    config.els.geolocation.container.removeClass('loading');
+
+    // Proceed when station data has been loaded.
+    app.api.promise.then(function() {
+
+      // Loop through stations and add location data.
+      $.each(config.stations, function(i, station) {
+        station.rank = calculateDistance(station, coordinates);
+        station.distance = formatDistance(station.rank);
+      });
+
+      // Send location data to main view.
+      app.main.currentView.populateDistance(config.stations);
+
+      // Sort stations from closest to farthest.
+      var sortedStations = _.sortBy(config.stations, 'rank');
+
+      // Show closest stations.
+      showNearby(sortedStations);
+
     });
-
-    // Send location data to main view.
-    app.main.currentView.populateDistance(config.stations.list);
-
-    // Sort stations from closest to farthest.
-    var sortedStations = _.sortBy(config.stations.list, 'rank');
-
-    // Show closest stations.
-    showNearby(sortedStations);
 
   },
 
@@ -154,7 +159,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
     // Add station.
     var id = $(event.target).closest('p').data('oid');
-    app.main.currentView.addStation(config.stations.list[id]);
+    app.main.currentView.addStation(config.stations[id]);
 
   },
 
