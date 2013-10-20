@@ -37,10 +37,12 @@ var AppController = Marionette.Controller.extend({
       // Store city.
       config.city = city;
 
-      // Get stations list or use already loaded one.s
+      // Get stations list or use already loaded one.
       if(!config.stations[city].list) {
         $.getJSON(config.stations[city].url)
-          .fail(this.error)
+          .fail(function() {
+            app.vent.trigger('messages:error', 'Could not load station list.');
+          })
           .done(cacheStations)
           .done(callback);
       } else {
@@ -48,7 +50,7 @@ var AppController = Marionette.Controller.extend({
       }
 
     } else {
-      this.error();
+      app.vent.trigger('messages:error', 'Unknown city.');
     }
 
   },
@@ -124,7 +126,7 @@ var AppController = Marionette.Controller.extend({
       app.vent.trigger('api:update:fetch');
 
     } else {
-      this.error();
+      app.vent.trigger('messages:error', 'Could not load snapshot.');
     }
 
   }
