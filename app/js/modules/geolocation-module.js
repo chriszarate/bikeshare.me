@@ -97,16 +97,16 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     };
 
     // Loop through stations and add location data.
-    $.each(cache.stations, function(i, station) {
+    $.each(config.stations.list, function(i, station) {
       station.rank = calculateDistance(station, coordinates);
       station.distance = formatDistance(station.rank);
     });
 
     // Send location data to main view.
-    app.main.currentView.populateDistance(cache.stations);
+    app.main.currentView.populateDistance(config.stations.list);
 
     // Sort stations from closest to farthest.
-    var sortedStations = _.sortBy(cache.stations, 'rank');
+    var sortedStations = _.sortBy(config.stations.list, 'rank');
 
     // Show closest stations.
     showNearby(sortedStations);
@@ -154,7 +154,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
     // Add station.
     var id = $(event.target).closest('p').data('oid');
-    app.main.currentView.addStation(cache.stations[id]);
+    app.main.currentView.addStation(config.stations.list[id]);
 
   },
 

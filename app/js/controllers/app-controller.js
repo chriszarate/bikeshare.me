@@ -4,10 +4,56 @@ var AppController = Marionette.Controller.extend({
 
   home: function() {
 
-    // Set city code.
-    if(!config.city) {
-      config.city = 'nyc';
+    // Load station data.
+    this.loadStations('nyc', this.showHome);
+
+  },
+
+  share: function(city, str) {
+
+    // Store snapshot.
+    config.snapshot = str;
+
+    // Load station data.
+    this.loadStations(city, this.showSnapshot);
+
+  },
+
+  error: function() {
+    Backbone.history.navigate('', true);
+    app.vent.trigger('messages:error', 'Could not process your request.');
+  },
+
+  loadStations: function(city, callback) {
+
+    // Cache stations list.
+    var cacheStations = function(data) {
+      config.stations.list = config.stations[city].list = data;
+    };
+
+    // Check for valid city.
+    if(config.stations[city]) {
+
+      // Store city.
+      config.city = city;
+
+      // Get stations list or use already loaded one.s
+      if(!config.stations[city].list) {
+        $.getJSON(config.stations[city].url)
+          .fail(this.error)
+          .done(cacheStations)
+          .done(callback);
+      } else {
+        callback();
+      }
+
+    } else {
+      this.error();
     }
+
+  },
+
+  showHome: function() {
 
     // Create new stations collection.
     var stations = new Stations();
@@ -33,18 +79,17 @@ var AppController = Marionette.Controller.extend({
     // Show/hide UI elements.
     config.els.suggestions.button.show();
 
-    app.vent.trigger('suggestions:initialize', cache.stations);
+    // Send triggers to app modules.
+    app.vent.trigger('api:update:fetch');
+    app.vent.trigger('suggestions:initialize', config.stations.list);
     app.vent.trigger('geolocation:initialize');
 
   },
 
-  share: function(city, str) {
+  showSnapshot: function() {
 
     // Decode request.
-    var snapshot = app.snapshot.decode(str);
-
-    // Set city code.
-    config.city = city;
+    var snapshot = app.snapshot.decode(config.snapshot);
 
     // Proceed if valid.
     if(snapshot.length) {
@@ -52,9 +97,10 @@ var AppController = Marionette.Controller.extend({
       // Create new stations collection.
       var stations = new Stations();
 
+      // Get station titles from station list.
       $.each(snapshot, function(i, datum) {
-        if(cache.stations[datum.id]) {
-          datum.title = cache.stations[datum.id].title;
+        if(config.stations.list[datum.id]) {
+          datum.title = config.stations.list[datum.id].title;
         }
       });
 
@@ -65,6 +111,7 @@ var AppController = Marionette.Controller.extend({
         })
       );
 
+      // Add snapshot stations to read-only view.
       stations.reset(snapshot);
 
       // Show/hide UI elements.
@@ -73,14 +120,13 @@ var AppController = Marionette.Controller.extend({
       config.els.suggestions.main.hide();
       config.els.suggestions.button.hide();
 
+      // Send triggers to app modules.
+      app.vent.trigger('api:update:fetch');
+
     } else {
       this.error();
     }
 
-  },
-
-  error: function() {
-    Backbone.history.navigate('', true);
   }
 
 });

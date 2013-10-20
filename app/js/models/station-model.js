@@ -50,7 +50,7 @@ var Station = Backbone.Model.extend({
     // Use updated station data, if available.
     // Fallback to locally stored title or a shrug.
     return {
-      title: (cache.stations[this.id]) ? cache.stations[this.id].title : this.get('title') || 'Unknown (' + this.id + ')'
+      title: (config.stations.list[this.id]) ? config.stations.list[this.id].title : this.get('title') || 'Unknown (' + this.id + ')'
     };
   },
 

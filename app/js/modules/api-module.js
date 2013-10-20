@@ -5,30 +5,25 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   // Placeholder for API response promise.
   var updatePromise = false,
 
-  // API endpoint.
-  apiEndpoints = config.api[config.city],
-
   // Request availablility data.
-  fetchUpdate = function(bootstrap) {
+  fetchUpdate = function() {
 
     // Create promise.
     updatePromise = new $.Deferred();
 
-    // Use bootstrapped data or fetch API response.
-    if(bootstrap && cache.update) {
-      updatePromise.resolve(cache.update);
-    } else {
-      $('.bikes, .docks').hide();
-      $.ajax({
-        url: apiEndpoints.apiBaseURL + apiEndpoints.apiUpdatePath,
-        dataType: 'jsonp',
-        timeout: 5000
-      }).done(function(data) {
-        updatePromise.resolve(data);
-      }).fail(function() {
-        app.vent.trigger('messages:api:error', 'Could not connect to the server.');
-      });
-    }
+    // Hide existing availability information.
+    $('.bikes, .docks').hide();
+
+    // Fetch API response.
+    $.ajax({
+      url: config.api[config.city].apiBaseURL + config.api[config.city].apiUpdatePath,
+      dataType: 'jsonp',
+      timeout: 5000
+    }).done(function(data) {
+      updatePromise.resolve(data);
+    }).fail(function() {
+      app.vent.trigger('messages:api:error', 'Could not connect to the server.');
+    });
 
     // Parse response.
     updatePromise.then(parseData);
@@ -53,8 +48,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
       // Cache station IDs.
       $.each(data.results, function(i, station) {
-        if(cache.stations[station.id]) {
-          cache.stations[station.id].availability = {
+        if(config.stations.list[station.id]) {
+          config.stations.list[station.id].availability = {
             status: station.status,
             available: {
               bikes: station.availableBikes,
@@ -97,9 +92,9 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   populateAvailability = function() {
     if(updatePromise) {
       updatePromise.then(function() {
-        app.main.currentView.populateAvailability(cache.stations);
+        app.main.currentView.populateAvailability(config.stations.list);
         if(app.nearby.currentView) {
-          app.nearby.currentView.populateAvailability(cache.stations);
+          app.nearby.currentView.populateAvailability(config.stations.list);
         }
       });
     }
