@@ -81,8 +81,7 @@ module.exports = function(grunt) {
             'Backbone': true,
             'Marionette': true,
             'Base62': true,
-            'JST': true,
-            'cache': true
+            'JST': true
           },
           jquery: true
         },
@@ -189,7 +188,6 @@ module.exports = function(grunt) {
         },
         src: [
           'build/components.min.js',
-          'build/stations.js',
           'build/app.min.js',
           'css/main.min.css'
         ],
