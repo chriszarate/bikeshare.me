@@ -252,7 +252,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     montreal: {
       id: 'montreal',
       oid: 21,
-      title: 'Montreal Bixi',
+      title: 'BIXI Montréal',
       url: 'http://api.citybik.es/bixi.json',
       lat: 45507330,
       lng: -73578450,
@@ -301,6 +301,276 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/niceride.json',
       lat: 44975641,
       lng: -93272185,
+      altNames: {}
+    },
+    melbourne: {
+      id: 'melbourne',
+      oid: 22,
+      title: 'Melbourne Bike Share',
+      url: 'http://api.citybik.es/melbourne.json',
+      lat: -37818306,
+      lng: 144945923,
+      altNames: {}
+    },
+    ecobici: {
+      id: 'ecobici',
+      oid: 13,
+      title: 'México, D.F. ECOBICI',
+      url: 'http://api.citybik.es/ecobici.json',
+      lat: 19434353,
+      lng: -99203220,
+      altNames: {}
+    },
+    barcelona: {
+      id: 'barcelona',
+      oid: 6,
+      title: 'Barcelona Bicing',
+      url: 'http://api.citybik.es/bicing.json',
+      lat: 41398298,
+      lng: 2153128,
+      altNames: {}
+    },
+    brisbane: {
+      id: 'brisbane',
+      oid: 16,
+      title: 'CityCycle Brisbane',
+      url: 'http://api.citybik.es/citycycle.json',
+      lat: -27471297,
+      lng: 153022570,
+      altNames: {}
+    },
+    seville: {
+      id: 'seville',
+      oid: 0,
+      title: 'Sevilla Sevici',
+      url: 'http://api.citybik.es/sevici.json',
+      lat: 37371724,
+      lng: -6003312,
+      altNames: {}
+    },
+    dublin: {
+      id: 'dublin',
+      oid: 1,
+      title: 'Dublin dublinbikes',
+      url: 'http://api.citybik.es/dublin.json',
+      lat: 53330662,
+      lng: -6260177,
+      altNames: {}
+    },
+    wien: {
+      id: 'wien',
+      oid: 17,
+      title: 'CityBike Wien',
+      url: 'http://api.citybik.es/wien.json',
+      lat: 48192986,
+      lng: 16398464,
+      altNames: {}
+    },
+    denver: {
+      id: 'denver',
+      oid: 26,
+      title: 'Denver B-cycle',
+      url: 'http://api.citybik.es/denver.json',
+      lat: 39679180,
+      lng: -104962990,
+      altNames: {}
+    },
+    desmoines: {
+      id: 'desmoines',
+      oid: 27,
+      title: 'Des Moines B-cycle',
+      url: 'http://api.citybik.es/desmoines.json',
+      lat: 41587640,
+      lng: -93626200,
+      altNames: {}
+    },
+    sanantonio: {
+      id: 'sanantonio',
+      oid: 28,
+      title: 'San Antonio B-cycle',
+      url: 'http://api.citybik.es/sanantonio.json',
+      lat: 29443560,
+      lng: -98479460,
+      altNames: {}
+    },
+    torino: {
+      id: 'torino',
+      oid: 29,
+      title: 'Torino [TO]Bike',
+      url: 'http://api.citybik.es/tobike.json',
+      lat: 45067019,
+      lng: 7678306,
+      altNames: {}
+    },
+    hawaii: {
+      id: 'hawaii',
+      oid: 30,
+      title: 'Hawai\'i B-cycle',
+      url: 'http://api.citybik.es/hawaii.json',
+      lat: 21392340,
+      lng: -157740980,
+      altNames: {}
+    },
+    ljubljana: {
+      id: 'ljubljana',
+      oid: 31,
+      title: 'Ljubljana BicikeLJ',
+      url: 'http://api.citybik.es/bicikelj.json',
+      lat: 46057421,
+      lng: 14510265,
+      altNames: {}
+    },
+    boulder: {
+      id: 'boulder',
+      oid: 32,
+      title: 'Boulder B-cycle',
+      url: 'http://api.citybik.es/boulder.json',
+      lat: 40013770,
+      lng: -105280870,
+      altNames: {}
+    },
+    milano: {
+      id: 'milano',
+      oid: 33,
+      title: 'Milano BikeMi',
+      url: 'http://api.citybik.es/bikemi.json',
+      lat: 45452319,
+      lng: 9177407,
+      altNames: {}
+    },
+    roma: {
+      id: 'roma',
+      oid: 38,
+      title: 'Roma Bike Sharing',
+      url: 'http://api.citybik.es/rome.json',
+      lat: 41900074,
+      lng: 12473173,
+      altNames: {}
+    },
+    venezia: {
+      id: 'venezia',
+      oid: 39,
+      title: 'Bike Sharing Venezia',
+      url: 'http://api.citybik.es/venice.json',
+      lat: 45479978,
+      lng: 12230497,
+      altNames: {}
+    },
+    toronto: {
+      id: 'toronto',
+      oid: 41,
+      title: 'BIXI Toronto',
+      url: 'http://api2.citybik.es/toronto.json',
+      lat: 43653743,
+      lng: -79388820,
+      altNames: {}
+    },
+    madison: {
+      id: 'madison',
+      oid: 42,
+      title: 'Madison B-cycle',
+      url: 'http://api.citybik.es/madison.json',
+      lat: 43067540,
+      lng: -89414030,
+      altNames: {}
+    },
+    ottawa: {
+      id: 'ottawa',
+      oid: 45,
+      title: 'Ottawa Capital BIXI',
+      url: 'http://api.citybik.es/ottawa.json',
+      lat: 45428997,
+      lng: -75691066,
+      altNames: {}
+    },
+    broward: {
+      id: 'broward',
+      oid: 46,
+      title: 'Broward B-cycle',
+      url: 'http://api.citybik.es/broward.json',
+      lat: 26167390,
+      lng: -80100320,
+      altNames: {}
+    },
+    charlotte: {
+      id: 'charlotte',
+      oid: 47,
+      title: 'Charlotte B-cycle',
+      url: 'http://api.citybik.es/charlotte.json',
+      lat: 35224430,
+      lng: -80839780,
+      altNames: {}
+    },
+    fortworth: {
+      id: 'fortworth',
+      oid: 48,
+      title: 'Fort Worth B-cycle',
+      url: 'http://api.citybik.es/fortworth.json',
+      lat: 32745780,
+      lng: -97311300,
+      altNames: {}
+    },
+    greenville: {
+      id: 'greenville',
+      oid: 49,
+      title: 'Greenville B-cycle',
+      url: 'http://api.citybik.es/greenville.json',
+      lat: 34845010,
+      lng: -82404480,
+      altNames: {}
+    },
+    houston: {
+      id: 'houston',
+      oid: 50,
+      title: 'Houston B-cycle',
+      url: 'http://api.citybik.es/houston.json',
+      lat: 29757370,
+      lng: -95367620,
+      altNames: {}
+    },
+    nashville: {
+      id: 'nashville',
+      oid: 51,
+      title: 'Nashville B-cycle',
+      url: 'http://api.citybik.es/nashville.json',
+      lat: 36162520,
+      lng: -86774260,
+      altNames: {}
+    },
+    spartanburg: {
+      id: 'spartanburg',
+      oid: 52,
+      title: 'Spartanburg B-cycle',
+      url: 'http://api.citybik.es/spartanburg.json',
+      lat: 34947470,
+      lng: -81921740,
+      altNames: {}
+    },
+    kansascity: {
+      id: 'kansascity',
+      oid: 53,
+      title: 'Kansas City B-cycle',
+      url: 'http://api.citybik.es/kansas.json',
+      lat: 39110540,
+      lng: -94580740,
+      altNames: {}
+    },
+    omaha: {
+      id: 'omaha',
+      oid: 54,
+      title: 'Omaha B-cycle',
+      url: 'http://api.citybik.es/omaha.json',
+      lat: 41238050,
+      lng: -96013500,
+      altNames: {}
+    },
+    padova: {
+      id: 'padova',
+      oid: 56,
+      title: 'GoodBike Padova',
+      url: 'http://api.citybik.es/goodbike.json',
+      lat: 45408944,
+      lng: 11878805,
       altNames: {}
     }
   };
