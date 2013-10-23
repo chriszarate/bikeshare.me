@@ -57,9 +57,17 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
     }
   },
 
+  // Update the city.
+  updateCity = function(city) {
+    var info = config.api[city],
+        map = info.map || info.url.replace(/\.json$/, '.html');
+    config.els.messages.city.html(info.title);
+    config.els.messages.map.attr('href', map);
+  },
+
   // Update the "share a snapshot" link.
   updateSnapshotLink = function(link) {
-    config.els.snapshot.link.attr('href', '/' + config.city + '/' + link);
+    config.els.snapshot.button.attr('href', '/' + config.city + '/' + link);
     config.els.snapshot.button.toggle(Boolean(link));
   };
 
@@ -69,6 +77,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   app.vent.bind('messages:reset', resetMessages);
   app.vent.bind('messages:api:error', showErrorAPI);
   app.vent.bind('messages:api:updated', updateDate);
+  app.vent.bind('messages:city:change', updateCity);
   app.vent.bind('messages:snapshot:link', updateSnapshotLink);
 
   // Bind to "refresh" link.

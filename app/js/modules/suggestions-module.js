@@ -3,7 +3,7 @@
 app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   // Expansions for common street abbreviations.
-  var tokenKeys = [
+  var stationTokens = [
     ['Ft.', 'fort'],
     ['St.', 'saint'],
     ['St', 'street'],
@@ -20,17 +20,17 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
   // Create tokens in format expected by Typeahead.
   tokenizeStations = function(i, station) {
     var alt = (station.alt) ? ' ' + station.alt : '';
-    station.tokens = makeTokens(station.title + alt);
+    station.tokens = makeStationTokens(station.title + alt);
   },
 
   // Populate tokens for common street abbreviations.
-  makeTokens = function(str) {
+  makeStationTokens = function(str) {
 
     var tokens = [],
         words = str.split(/[\/,— ]+/);
 
     // Tokens
-    tokenKeys.forEach(function(key) {
+    stationTokens.forEach(function(key) {
       if(words.indexOf(key[0]) !== -1) {
         tokens.push(key[1]);
       }
@@ -40,19 +40,30 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   },
 
-  // Process user selection from Typeahead.
+  // Process station selection from Typeahead.
   selectStation = function(e, datum) {
-
-    // Add station.
-    app.main.currentView.addStation(datum);
 
     // Clear input form.
     $(this).typeahead('setQuery', '').blur();
 
+    // Add station.
+    app.main.currentView.addStation(datum);
+
+  },
+
+  // Process city selection from Typeahead.
+  selectCity = function(e, datum) {
+
+    // Clear input forms.
+    clearQueries();
+
+    // Navigate to city.
+    Backbone.history.navigate(datum.id, true);
+
   },
 
   // Format suggestions.
-  suggestionTemplate = function(datum) {
+  stationTemplate = function(datum) {
 
     // Defaults.
     var model = {
@@ -61,7 +72,6 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
       alt: datum.alt || '',
       distance: datum.distance || '',
       color: 'suggestion',
-      status: '',
       available: {},
       flags: {}
     };
@@ -74,51 +84,92 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   },
 
-  clearQuery = function() {
-    config.els.suggestions.input.typeahead('setQuery', '').blur();
+  clearQueries = function() {
+    config.els.suggestions.stations.input.typeahead('setQuery', '').blur();
+    config.els.suggestions.city.input.typeahead('setQuery', '').blur();
   },
 
-  showUI = function() {
-    config.els.suggestions.button.hide();
-    config.els.suggestions.main.show();
-    config.els.suggestions.input.focus();
+  showStationUI = function() {
+    config.els.suggestions.stations.button.hide();
+    config.els.suggestions.stations.main.show();
+    config.els.suggestions.stations.input.focus();
   },
 
-  hideUI = function() {
-    config.els.suggestions.main.hide();
-    config.els.suggestions.button.show();
+  showCityUI = function() {
+    var width = config.els.suggestions.city.button.outerWidth();
+    config.els.suggestions.city.button.hide();
+    config.els.suggestions.city.main.width(width).show();
+    config.els.suggestions.city.input.focus();
+  },
+
+  hideStationUI = function() {
+    config.els.suggestions.stations.main.hide();
+    config.els.suggestions.stations.button.show();
+  },
+
+  hideCityUI = function() {
+    config.els.suggestions.city.main.hide();
+    config.els.suggestions.city.button.show();
   },
 
   scrollToFit = function() {
-    var offset = config.els.suggestions.input.offset().top;
+    var offset = config.els.suggestions.stations.input.offset().top;
     if(offset > 300) {
       $('html, body').animate({scrollTop: offset - 100});
     }
   },
 
-  initialize = function(stations) {
+  initializeStations = function(stations) {
+
+    // Destory any existing Typeahead bindings.
+    config.els.suggestions.stations.input.typeahead('destroy');
 
     // Tokenize station data.
     $.each(stations, tokenizeStations);
 
-    // Bind Typeahead to input field.
-    config.els.suggestions.input.typeahead({
+    // Bind Typeahead to station input field.
+    config.els.suggestions.stations.input.typeahead({
       name: 'stations-' + new Date().getTime(),
       valueKey: 'title',
       local: stations,
-      template: suggestionTemplate,
+      template: stationTemplate,
       limit: 10
-    }).on('typeahead:selected', selectStation)
-      .on('typeahead:opened', scrollToFit)
-      .on('typeahead:closed', hideUI);
+    });
 
-    // Activate add station button.
-    config.els.suggestions.button.on('click', showUI);
+    // Show station button.
+    config.els.suggestions.stations.button.slideDown();
+
+  },
+
+  initializeCity = function() {
+
+    // Destory any existing Typeahead bindings.
+    config.els.suggestions.city.input.typeahead('destroy');
+
+    // Bind Typeahead to city input field.
+    config.els.suggestions.city.input.typeahead({
+      name: 'city-' + new Date().getTime(),
+      valueKey: 'title',
+      local: config.api,
+      limit: 0
+    });
 
   };
 
   // Bind to events.
-  app.vent.bind('suggestions:initialize', initialize);
-  app.vent.bind('suggestions:close', clearQuery);
+  config.els.suggestions.stations.button.on('click', showStationUI);
+  config.els.suggestions.stations.input
+    .on('typeahead:selected', selectStation)
+    .on('typeahead:opened', scrollToFit)
+    .on('typeahead:closed', hideStationUI);
+  config.els.suggestions.city.button.on('click', showCityUI);
+  config.els.suggestions.city.input
+    .on('typeahead:selected', selectCity)
+    .on('typeahead:opened', scrollToFit)
+    .on('typeahead:closed', hideCityUI);
+
+  app.vent.bind('suggestions:initialize:stations', initializeStations);
+  app.vent.bind('suggestions:initialize:city', initializeCity);
+  app.vent.bind('suggestions:close', clearQueries);
 
 });

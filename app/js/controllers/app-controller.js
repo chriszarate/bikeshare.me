@@ -2,13 +2,13 @@
 
 var AppController = Marionette.Controller.extend({
 
-  home: function() {
+  home: function(city) {
 
     // Create new stations collection.
     var stations = new Stations();
 
-    // Set city.
-    this.setCity('nyc');
+    // Get city.
+    this.getCity(city);
 
     // Set local storage for the collection.
     stations.localStorage = new Backbone.LocalStorage(config.city + '-stations');
@@ -31,10 +31,11 @@ var AppController = Marionette.Controller.extend({
     // Fetch stations from local storage.
     stations.fetch({reset: true});
 
-    // Show/hide UI elements.
-    config.els.suggestions.button.show();
+    // Remove snapshot class from body.
+    $('body').removeClass('snapshot');
 
     // Send triggers to app modules.
+    app.vent.trigger('suggestions:initialize:city');
     app.vent.trigger('api:update:fetch', true);
 
   },
@@ -63,35 +64,60 @@ var AppController = Marionette.Controller.extend({
       // Add snapshot stations to read-only view.
       stations.reset(snapshot);
 
-      // Show/hide UI elements.
-      config.els.geolocation.container.hide();
-      config.els.snapshot.button.hide();
-      config.els.suggestions.main.hide();
-      config.els.suggestions.button.hide();
+      // Add snapshot class to body.
+      $('body').addClass('snapshot');
 
       // Send triggers to app modules.
       app.vent.trigger('api:update:fetch');
 
     } else {
-      app.vent.trigger('messages:error', 'Could not load snapshot.');
+      this.error('Could not load snapshot.');
     }
+
+  },
+
+  getCity: function(city) {
+
+    // If no city was supplied, find one in local storage.
+    if(!city) {
+      if(window.localStorage) {
+        city = localStorage.getItem('city') || 'nyc';
+      } else {
+        this.error('Your browser does not support local storage.');
+      }
+    }
+
+    // Set city.
+    this.setCity(city);
 
   },
 
   setCity: function(city) {
 
+    // Strip extraneous characters.
+    city = city.replace(/[ \/]+/, '');
+
     // Make sure requested city is supported.
     if(config.api[city]) {
+
+      // Announce city selection.
       config.city = city;
+      localStorage.setItem('city', city);
+      app.vent.trigger('messages:city:change', city);
+
+      // Delete existing station data.
+      delete config.stations;
+
     } else {
-      app.vent.trigger('messages:error', 'Unsupported city.');
+      this.setCity('nyc');
+      this.error('Unsupported city.');
     }
 
   },
 
-  error: function() {
+  error: function(message) {
     Backbone.history.navigate('', true);
-    app.vent.trigger('messages:error', 'Could not process your request.');
+    app.vent.trigger('messages:error', message);
   }
 
 });

@@ -14,6 +14,8 @@ Add stations, either by typing street names or clicking on the locate icon to fi
 
 The number in front of a solid circle (●) indicates available bikes. The number in front of an open circle (○) indicates available docks.
 
+Use the tool at the bottom to change to a different city / bike share program.
+
 ## Does it sync somewhere?
 
 Your stations are saved to local storage. Your browser will remember your stations, but they won’t be synced to other browsers. You can also click the share icon, which links to a snapshot of the current list of stations that you can share/save/bookmark. ([Here’s mine.][shared])

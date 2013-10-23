@@ -20,44 +20,6 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     ['\'', '’']
   ],
 
-  // Provide alternate names for some stations.
-  alternateNames = {
-    '382': 'Union Sq',
-    '285': 'Union Sq',
-    '497': 'Union Sq',
-    '293': 'Astor Pl',
-    '304': 'Bowling Green',
-    '444': 'Madison Sq',
-    '402': 'Madison Sq',
-    '517': 'Grand Central',
-    '519': 'Grand Central',
-    '318': 'Grand Central',
-    '153': 'Bryant Park',
-    '465': 'Times Sq',
-    '490': 'Penn Station',
-    '492': 'Penn Station',
-    '379': 'Penn Station',
-    '521': 'Penn Station',
-    '477': 'Port Authority',
-    '529': 'Port Authority',
-    '538': 'Rockefeller Center',
-    '504': 'Stuyvesant Town',
-    '511': 'Stuyvesant Town',
-    '2003': 'Stuyvesant Town',
-    '487': 'Stuyvesant Town / Peter Cooper Village',
-    '545': 'Peter Cooper Village',
-    '387': 'Brooklyn Bridge / City Hall',
-    '3002': 'World Financial Center',
-    '427': 'Staten Island Ferry',
-    '259': 'Staten Island Ferry',
-    '534': 'Staten Island Ferry',
-    '315': 'Pier 11',
-    '458': 'Chelsea Piers',
-    '459': 'Chelsea Piers',
-    '498': 'Herald Sq',
-    '505': 'Herald Sq'
-  },
-
   // Request availablility data.
   fetchUpdate = function(geolocate) {
 
@@ -65,10 +27,14 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     $('.bikes, .docks').hide();
 
     // Fetch API response.
-    api.promise = $.ajax(config.api[config.city].ajaxOptions)
-      .then(config.api[config.city].parseData)
-      .then(populateAvailability)
-      .fail(showError);
+    api.promise = $.ajax({
+      url: config.api[config.city].url,
+      dataType: 'jsonp',
+      timeout: 5000
+    })
+    .then(parseStations)
+    .then(populateAvailability)
+    .fail(showError);
 
     // Start geolocation, if requested.
     if(geolocate) {
@@ -77,51 +43,77 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   },
 
-  // Data parsing functions.
-  parseDataNYC = function(data) {
+  // Parse station data.
+  parseStations = function(stations) {
 
-    if(data.ok) {
+    // Default attribute map.
+    var defaultMap = {
+      id: 'id',
+      status: 'status',
+      title: 'name',
+      lat: 'lat',
+      lng: 'lng',
+      bikes: 'bikes',
+      docks: 'free'
+    },
 
-      // Pass along messages from the API.
-      if(data.meta.length) {
-        var warning = $.map(data.meta, function(str) { return str; });
-        app.vent.trigger('messages:warn', warning.join('<br>'));
-      }
+    // Get attribute map if one is supplied.
+    map = config.api[config.city].attributeMap || defaultMap;
 
-      // Cache station IDs.
-      config.stations = {};
-      $.each(data.results, function(i, station) {
-        config.stations[station.id] = {
-          id: station.id,
-          title: makeReplacements(station.label),
-          alt: alternateNames[station.id] || false,
-          lat: station.latitude,
-          lng: station.longitude,
-          availability: {
-            status: station.status,
-            available: {
-              bikes: station.availableBikes,
-              docks: station.availableDocks
-            },
-            flags: {
-              station: station.status.toLowerCase(),
-              bikes: applyUIThreshholds(station.availableBikes),
-              docks: applyUIThreshholds(station.availableDocks)
-            }
-          }
-        };
-      });
-
-      // Change last updated date.
-      app.vent.trigger('messages:api:updated', new Date());
-
-    } else {
-
-      // Data was not usable.
-      app.vent.trigger('messages:api:error', 'Cannot read availability data.');
-
+    // Drill down in results if required.
+    if(map.root) {
+      stations = stations[map.root];
     }
 
+    // Cache station information.
+    config.stations = {};
+    $.each(stations, function(i, station) {
+      var id = station[map.id],
+          bikes = station[map.bikes],
+          docks = station[map.docks];
+      config.stations[id] = {
+        id: id,
+        title: makeReplacements(station[map.title]),
+        alt: config.api[config.city].altNames[id] || false,
+        lat: station[map.lat],
+        lng: station[map.lng],
+        availability: {
+          available: {
+            bikes: bikes,
+            docks: docks
+          },
+          flags: {
+            station: parseStatus(station[map.status]),
+            bikes: applyUIThreshholds(bikes),
+            docks: applyUIThreshholds(docks)
+          }
+        }
+      };
+    });
+
+    // Change last updated date.
+    if($.isEmptyObject(config.stations)) {
+      showError();
+    } else {
+      app.vent.trigger('messages:api:updated', new Date());
+    }
+
+  },
+
+  // Parse various statuses.
+  parseStatus = function(status) {
+    switch(status) {
+    case 'In Service':
+    case 'Active':
+    case 'true':
+    case true:
+    case '1':
+    case 1:
+    case undefined:
+      return 'active';
+    default:
+      return 'inactive';
+    }
   },
 
   // Update station availability.
@@ -137,15 +129,20 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   // Send availability data to stations view.
   populateAvailability = function() {
-    app.main.currentView.populateAvailability(config.stations);
-    if(app.nearby.currentView) {
-      app.nearby.currentView.populateAvailability(config.stations);
+    if(!$.isEmptyObject(config.stations)) {
+      app.main.currentView.populateAvailability(config.stations);
+      if(app.nearby.currentView) {
+        app.nearby.currentView.populateAvailability(config.stations);
+      }
+      if(Backbone.history.fragment.indexOf('/') === -1) {
+        app.vent.trigger('suggestions:initialize:stations', config.stations);
+      }
     }
-    app.vent.trigger('suggestions:initialize', config.stations);
   },
 
   // Show server error message.
   showError = function() {
+    app.vent.trigger('geolocation:hide');
     app.vent.trigger('messages:api:error', 'Could not connect to the server.');
   },
 
@@ -201,16 +198,92 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   // API endpoints and parsing functions.
   config.api = {
     nyc: {
-      ajaxOptions: {
-        url: 'http://appservices.citibikenyc.com/data2/stations.php',
-        dataType: 'jsonp',
-        timeout: 5000
+      id: 'nyc',
+      title: 'New York CitiBike',
+      url: 'http://appservices.citibikenyc.com/data2/stations.php',
+      map: 'http://api.citybik.es/citibikenyc.html',
+      attributeMap: {
+        root: 'results',
+        id: 'id',
+        status: 'status',
+        title: 'label',
+        lat: 'latitude',
+        lng: 'longitude',
+        bikes: 'availableBikes',
+        docks: 'availableDocks'
       },
-      parseData: parseDataNYC
+      altNames: {
+        '382': 'Union Sq',
+        '285': 'Union Sq',
+        '497': 'Union Sq',
+        '293': 'Astor Pl',
+        '304': 'Bowling Green',
+        '444': 'Madison Sq',
+        '402': 'Madison Sq',
+        '517': 'Grand Central',
+        '519': 'Grand Central',
+        '318': 'Grand Central',
+        '153': 'Bryant Park',
+        '465': 'Times Sq',
+        '490': 'Penn Station',
+        '492': 'Penn Station',
+        '379': 'Penn Station',
+        '521': 'Penn Station',
+        '477': 'Port Authority',
+        '529': 'Port Authority',
+        '538': 'Rockefeller Center',
+        '504': 'Stuyvesant Town',
+        '511': 'Stuyvesant Town',
+        '2003': 'Stuyvesant Town',
+        '487': 'Stuyvesant Town / Peter Cooper Village',
+        '545': 'Peter Cooper Village',
+        '387': 'Brooklyn Bridge / City Hall',
+        '3002': 'World Financial Center',
+        '427': 'Staten Island Ferry',
+        '259': 'Staten Island Ferry',
+        '534': 'Staten Island Ferry',
+        '315': 'Pier 11',
+        '458': 'Chelsea Piers',
+        '459': 'Chelsea Piers',
+        '498': 'Herald Sq',
+        '505': 'Herald Sq'
+      }
+    },
+    montreal: {
+      id: 'montreal',
+      title: 'Montreal Bixi',
+      url: 'http://api.citybik.es/bixi.json',
+      altNames: {}
+    },
+    dc: {
+      id: 'dc',
+      title: 'Washington D.C. Capital BikeShare',
+      url: 'http://api.citybik.es/capitalbikeshare.json',
+      altNames: {}
     },
     chicago: {
-      apiBaseURL: 'http://appservices.citibikenyc.com',
-      apiUpdatePath: '/data2/stations.php?updateOnly=true'
+      id: 'chicago',
+      title: 'Chicago Divvy',
+      url: 'http://api.citybik.es/divvybikes.json',
+      altNames: {}
+    },
+    london: {
+      id: 'london',
+      title: 'London Barclays Cycle Hire',
+      url: 'http://api.citybik.es/barclays.json',
+      altNames: {}
+    },
+    paris: {
+      id: 'paris',
+      title: 'Paris Velib',
+      url: 'http://api.citybik.es/velib.json',
+      altNames: {}
+    },
+    msp: {
+      id: 'msp',
+      title: 'Minneapolis–St. Paul NiceRide',
+      url: 'http://api.citybik.es/niceride.json',
+      altNames: {}
     }
   };
 
