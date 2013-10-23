@@ -319,8 +319,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       lng: 144945923,
       altNames: {}
     },
-    ecobici: {
-      id: 'ecobici',
+    mexico: {
+      id: 'mexico',
       oid: 13,
       title: 'México, D.F. ECOBICI',
       url: 'http://api.citybik.es/ecobici.json',
