@@ -253,6 +253,11 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
   },
 
+  // Hide geolacation for errors and snapshots.
+  hideGeolocation = function() {
+    config.els.geolocation.container.slideUp();
+  },
+
   // Calculate distance between two points.
   calculateDistance = function(p1, p2) {
 
@@ -332,5 +337,6 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   // Bind to events.
   app.vent.bind('geolocation:initialize', initialize);
   app.vent.bind('geolocation:update', geolocate);
+  app.vent.bind('geolocation:hide', hideGeolocation);
 
 });
