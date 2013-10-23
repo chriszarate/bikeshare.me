@@ -20,6 +20,11 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     ['\'', '’']
   ],
 
+  // Convert from E6 geodata to decimal.
+  convertE6 = function(int) {
+    return int / 1000000;
+  },
+
   // Request availablility data.
   fetchUpdate = function(geolocate) {
 
@@ -70,13 +75,15 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     $.each(stations, function(i, station) {
       var id = station[map.id],
           bikes = station[map.bikes],
-          docks = station[map.docks];
+          docks = station[map.docks],
+          lat = station[map.lat],
+          lng = station[map.lng];
       config.stations[id] = {
         id: id,
         title: makeReplacements(station[map.title]),
         alt: config.api[config.city].altNames[id] || false,
-        lat: station[map.lat],
-        lng: station[map.lng],
+        lat: (Math.abs(lat) > 1000) ? convertE6(lat) : lat,
+        lng: (Math.abs(lng) > 1000) ? convertE6(lng) : lng,
         availability: {
           available: {
             bikes: bikes,
