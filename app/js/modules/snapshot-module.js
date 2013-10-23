@@ -19,7 +19,7 @@ app.module('snapshot', function(snapshot, app, Backbone, Marionette, $) {
     return colorMarkers[model.attributes.color] + base62.encode(parseInt(model.id, 10));
   };
 
-  // Decode a snapshot URL into a station datum.
+  // Decode a snapshot URL into station data.
   this.decode = function(str) {
 
     var stations = [];
@@ -36,6 +36,9 @@ app.module('snapshot', function(snapshot, app, Backbone, Marionette, $) {
         }
       }
     });
+
+    // Hide snapshot button.
+    config.els.snapshot.button.hide();
 
     return stations;
 
