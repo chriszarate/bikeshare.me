@@ -251,38 +251,56 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     },
     montreal: {
       id: 'montreal',
+      oid: 21,
       title: 'Montreal Bixi',
       url: 'http://api.citybik.es/bixi.json',
+      lat: 45507330,
+      lng: -73578450,
       altNames: {}
     },
     dc: {
       id: 'dc',
+      oid: 24,
       title: 'Washington D.C. Capital BikeShare',
       url: 'http://api.citybik.es/capitalbikeshare.json',
+      lat: 38894000,
+      lng: -76947974,
       altNames: {}
     },
     chicago: {
       id: 'chicago',
+      oid: 55,
       title: 'Chicago Divvy',
       url: 'http://api.citybik.es/divvybikes.json',
+      lat: 41897448,
+      lng: -87628722,
       altNames: {}
     },
     london: {
       id: 'london',
+      oid: 12,
       title: 'London Barclays Cycle Hire',
       url: 'http://api.citybik.es/barclays.json',
+      lat: 51488365,
+      lng: -129361,
       altNames: {}
     },
     paris: {
       id: 'paris',
+      oid: 3,
       title: 'Paris Velib',
       url: 'http://api.citybik.es/velib.json',
+      lat: 48874575,
+      lng: 2356796,
       altNames: {}
     },
     msp: {
       id: 'msp',
+      oid: 25,
       title: 'Minneapolis–St. Paul NiceRide',
       url: 'http://api.citybik.es/niceride.json',
+      lat: 44975641,
+      lng: -93272185,
       altNames: {}
     }
   };
