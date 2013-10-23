@@ -32,15 +32,23 @@ config.els = {
   },
   messages: {
     error: $('#error'),
-    warning: $('#warning')
+    warning: $('#warning'),
+    city: $('#city'),
+    map: $('#map')
   },
   snapshot: {
-    button: $('#snapshot'),
-    link: $('#snapshot a')
+    button: $('#snapshot')
   },
   suggestions: {
-    main: $('#suggestions'),
-    input: $('#user-input'),
-    button: $('#add')
+    stations: {
+      main: $('#suggestions'),
+      input: $('#station-input'),
+      button: $('#add')
+    },
+    city: {
+      main: $('#cities'),
+      input: $('#city-input'),
+      button: $('#city')
+    }
   }
 };
