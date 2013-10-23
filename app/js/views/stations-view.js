@@ -78,7 +78,6 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
       } else {
         // Station does not exist, make it appear inactive.
         model.updateAvailability({
-          status: 'Inactive',
           available: {},
           flags: {station: 'inactive'}
         });
@@ -120,12 +119,12 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
   startDrag: function() {
     app.vent.trigger('suggestions:close');
     config.jqueryui.dropTarget.show();
-    config.els.suggestions.button.hide();
+    config.els.suggestions.stations.button.hide();
   },
 
   stopDrag: function() {
     config.jqueryui.dropTarget.hide();
-    config.els.suggestions.button.show();
+    config.els.suggestions.stations.button.show();
   },
 
   processDrop: function(event, ui) {
