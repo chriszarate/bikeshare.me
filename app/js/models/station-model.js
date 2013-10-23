@@ -13,7 +13,6 @@ var Station = Backbone.Model.extend({
 
   // Unsynced attributes.
   availability: {
-    status: '',
     available: {},
     flags: {}
   },
