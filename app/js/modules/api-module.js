@@ -86,7 +86,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
           lng = station[map.lng];
       config.stations[id] = {
         id: id,
-        title: makeReplacements(station[map.title]),
+        title: makeReplacements(station[map.title], map.ordinals),
         alt: config.api[config.city].altNames[id] || false,
         lat: (Math.abs(lat) > 1000) ? convertE6(lat) : lat,
         lng: (Math.abs(lng) > 1000) ? convertE6(lng) : lng,
@@ -181,7 +181,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   },
 
-  makeReplacements = function(str) {
+  makeReplacements = function(str, ordinals) {
 
     // Replacements
     replacements.forEach(function(replacement) {
@@ -190,8 +190,10 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     });
 
     // Ordinals :/
-    str = str.replace(/([0-9]+) /g, makeOrdinals);
-    str = str.replace(/([0-9]+)$/, makeOrdinals);
+    if(ordinals) {
+      str = str.replace(/([0-9]+) /g, makeOrdinals);
+      str = str.replace(/([0-9]+)$/, makeOrdinals);
+    }
 
     return str;
 
@@ -223,7 +225,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
         lat: 'latitude',
         lng: 'longitude',
         bikes: 'availableBikes',
-        docks: 'availableDocks'
+        docks: 'availableDocks',
+        ordinals: true
       },
       altNames: {
         '382': 'Union Sq',
