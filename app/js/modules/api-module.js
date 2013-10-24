@@ -4,9 +4,11 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   // Standardize abbreviations and grammar.
   var replacements = [
+    ['/', ' / '],
     [' +', ' '],
     ['Street', 'St'],
     [' st$', ' St'],
+    ['St. /', 'St /'],
     ['Avenue', 'Ave'],
     ['Av ', 'Ave '],
     ['Av$', 'Ave'],
@@ -14,10 +16,14 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     ['West ([0-9])', 'W $1'],
     [' and ', ' & '],
     ['Plz', 'Plaza'],
+    ['Pza', 'Plaza'],
     ['Place', 'Pl'],
     ['Square', 'Sq'],
+    ['Court', 'Ct'],
+    ['Crt', 'Ct'],
     [' - ', '—'],
-    ['\'', '’']
+    ['\'', '’'],
+    ['^[0-9]+[—_]', '']
   ],
 
   // Convert from E6 geodata to decimal.
