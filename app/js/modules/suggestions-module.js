@@ -14,6 +14,10 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     ['E', 'east'],
     ['S', 'south'],
     ['W', 'west'],
+    ['NE', 'northeast'],
+    ['NW', 'northwest'],
+    ['SE', 'southeast'],
+    ['SW', 'southwest'],
     ['&', 'and']
   ],
 
