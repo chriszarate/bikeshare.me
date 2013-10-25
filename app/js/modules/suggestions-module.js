@@ -76,11 +76,16 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     // Clear input forms.
     clearQueries();
 
-    // Hide add station button.
-    config.els.suggestions.stations.button.hide();
+    // Proceed only if selection has changed.
+    if(datum.id !== Backbone.history.fragment) {
 
-    // Navigate to city.
-    Backbone.history.navigate(datum.id, true);
+      // Hide add station button.
+      config.els.suggestions.stations.button.hide();
+
+      // Navigate to city.
+      Backbone.history.navigate(datum.id, true);
+
+    }
 
   },
 
