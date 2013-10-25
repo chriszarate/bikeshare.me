@@ -73,7 +73,10 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     },
 
     // Get attribute map if one is supplied.
-    map = config.api[config.city].attributeMap || defaultMap;
+    map = config.api[config.city].attributeMap || defaultMap,
+
+    // Get title formatter if one is supplied.
+    formatter = config.api[config.city].formatter;
 
     // Drill down in results if required.
     if(map.root) {
@@ -84,13 +87,14 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     config.stations = {};
     $.each(stations, function(i, station) {
       var id = station[map.id],
+          title = makeReplacements(station[map.title], replacements),
           bikes = station[map.bikes],
           docks = station[map.docks],
           lat = station[map.lat],
           lng = station[map.lng];
       config.stations[id] = {
         id: id,
-        title: makeReplacements(station[map.title], map.ordinals),
+        title: (formatter) ? formatter(title) : title,
         alt: config.api[config.city].altNames[id] || false,
         lat: (Math.abs(lat) > 1000) ? convertE6(lat) : lat,
         lng: (Math.abs(lng) > 1000) ? convertE6(lng) : lng,
@@ -107,6 +111,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
         }
       };
     });
+
+
 
     // Change last updated date.
     if($.isEmptyObject(config.stations)) {
@@ -152,7 +158,16 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     app.vent.trigger('messages:api:error', 'Could not connect to the server.');
   },
 
-  makeOrdinals = function(match, submatch) {
+  // Convert to title case.
+  // http://stackoverflow.com/questions/196972/
+  titleCase = function(str) {
+    return str.replace(/\w\S*/g, function(word) {
+      return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+    });
+  },
+
+  // Make an ordinal from a number. 1 -> 1st, 2 -> 2nd, et al.
+  makeOrdinal = function(match, submatch) {
 
     var lastChar = submatch[submatch.length - 1],
         irregular = ['11', '12', '13'],
@@ -174,19 +189,19 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
 
   },
 
-  makeReplacements = function(str, ordinals) {
+  // Make ordinals in a string.
+  makeOrdinals = function(str) {
+    return str.replace(/([0-9]+) /g, makeOrdinal)
+              .replace(/([0-9]+)$/, makeOrdinal);
+  },
+
+  makeReplacements = function(str, replacementArr) {
 
     // Replacements
-    replacements.forEach(function(replacement) {
+    replacementArr.forEach(function(replacement) {
       var regex = new RegExp(replacement[0], 'g');
       str = str.replace(regex, replacement[1]);
     });
-
-    // Ordinals :/
-    if(ordinals) {
-      str = str.replace(/([0-9]+) /g, makeOrdinals);
-      str = str.replace(/([0-9]+)$/, makeOrdinals);
-    }
 
     return str;
 
@@ -210,6 +225,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       title: 'New York CitiBike',
       url: 'http://appservices.citibikenyc.com/data2/stations.php',
       map: 'http://api.citybik.es/citibikenyc.html',
+      formatter: makeOrdinals,
       attributeMap: {
         root: 'results',
         id: 'id',
@@ -218,8 +234,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
         lat: 'latitude',
         lng: 'longitude',
         bikes: 'availableBikes',
-        docks: 'availableDocks',
-        ordinals: true
+        docks: 'availableDocks'
       },
       altNames: {
         '382': 'Union Sq',
@@ -301,6 +316,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/velib.json',
       lat: 48874575,
       lng: 2356796,
+      formatter: titleCase,
       altNames: {}
     },
     msp: {
@@ -328,6 +344,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/ecobici.json',
       lat: 19434353,
       lng: -99203220,
+      formatter: titleCase,
       altNames: {}
     },
     barcelona: {
@@ -346,6 +363,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/citycycle.json',
       lat: -27471297,
       lng: 153022570,
+      formatter: titleCase,
       altNames: {}
     },
     seville: {
@@ -355,6 +373,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/sevici.json',
       lat: 37371724,
       lng: -6003312,
+      formatter: titleCase,
       altNames: {}
     },
     dublin: {
@@ -364,6 +383,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/dublin.json',
       lat: 53330662,
       lng: -6260177,
+      formatter: titleCase,
       altNames: {}
     },
     wien: {
@@ -427,6 +447,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       url: 'http://api.citybik.es/bicikelj.json',
       lat: 46057421,
       lng: 14510265,
+      formatter: titleCase,
       altNames: {}
     },
     boulder: {
