@@ -21,7 +21,8 @@ var StationView = Backbone.Marionette.ItemView.extend({
     'drop:item': 'clear'
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options;
     this.listenTo(this.model, 'change', this.render);
   },
 

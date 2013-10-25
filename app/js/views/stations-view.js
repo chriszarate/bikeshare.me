@@ -12,7 +12,10 @@ var StationsView = Backbone.Marionette.CollectionView.extend({
     'sortupdate': 'changeOrder'
   },
 
-  initialize: function() {
+  initialize: function(options) {
+
+    // Save options.
+    this.options = options;
 
     // Listen to events.
     this.listenTo(this.collection, 'reset', this.updateAvailability);
