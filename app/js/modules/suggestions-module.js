@@ -170,7 +170,7 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   initializeCities = function(cities) {
 
-    // Destory any existing Typeahead bindings.
+    // Destroy any existing Typeahead bindings.
     config.els.suggestions.city.input.typeahead('destroy');
 
     // Tokenize station data.
