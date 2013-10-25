@@ -21,20 +21,24 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     ['&', 'and']
   ],
 
-  // Create tokens in format expected by Typeahead.
-  tokenizeStations = function(i, station) {
-    var alt = (station.alt) ? ' ' + station.alt : '';
-    station.tokens = makeStationTokens(station.title + alt);
-  },
+  // Expansions and alternate names for cities and bike share programs.
+  cityTokens = [
+    ['CitiBike', 'nyc'],
+    ['B-cycle', 'bcycle'],
+    ['[TO]Bike', 'tobike'],
+    ['México', 'mexico'],
+    ['D.F.', 'df'],
+    ['Montréal', 'montreal']
+  ],
 
-  // Populate tokens for common street abbreviations.
-  makeStationTokens = function(str) {
+  // Populate tokens.
+  makeTokens = function(str, tokenArr) {
 
     var tokens = [],
         words = str.split(/[\/,— ]+/);
 
     // Tokens
-    stationTokens.forEach(function(key) {
+    tokenArr.forEach(function(key) {
       if(words.indexOf(key[0]) !== -1) {
         tokens.push(key[1]);
       }
@@ -42,6 +46,17 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
     return $.merge(words, tokens);
 
+  },
+
+  // Create tokens in format expected by Typeahead.
+  tokenizeStations = function(i, station) {
+    var alt = (station.alt) ? ' ' + station.alt : '';
+    station.tokens = makeTokens(station.title + alt, stationTokens);
+  },
+
+  // Create tokens in format expected by Typeahead.
+  tokenizeCities = function(i, city) {
+    city.tokens = makeTokens(city.title, cityTokens);
   },
 
   // Process station selection from Typeahead.
@@ -148,16 +163,19 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
 
   },
 
-  initializeCity = function() {
+  initializeCities = function(cities) {
 
     // Destory any existing Typeahead bindings.
     config.els.suggestions.city.input.typeahead('destroy');
+
+    // Tokenize station data.
+    $.each(cities, tokenizeCities);
 
     // Bind Typeahead to city input field.
     config.els.suggestions.city.input.typeahead({
       name: 'city-' + new Date().getTime(),
       valueKey: 'title',
-      local: config.api,
+      local: cities,
       limit: 0
     });
 
@@ -176,7 +194,7 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     .on('typeahead:closed', hideCityUI);
 
   app.vent.bind('suggestions:initialize:stations', initializeStations);
-  app.vent.bind('suggestions:initialize:city', initializeCity);
+  app.vent.bind('suggestions:initialize:cities', initializeCities);
   app.vent.bind('suggestions:close', clearQueries);
 
 });

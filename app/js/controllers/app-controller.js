@@ -35,7 +35,7 @@ var AppController = Marionette.Controller.extend({
     $('body').removeClass('snapshot');
 
     // Send triggers to app modules.
-    app.vent.trigger('suggestions:initialize:city');
+    app.vent.trigger('suggestions:initialize:cities', config.api);
     app.vent.trigger('api:update:fetch', true);
 
   },
