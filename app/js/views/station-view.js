@@ -39,12 +39,6 @@ var StationView = Backbone.Marionette.ItemView.extend({
     this.model._updating = false;
   },
 
-  remove: function() {
-    this.$el.slideUp(function() {
-      $(this).remove();
-    });
-  },
-
   nextColor: function() {
     if(this.options.editable) {
       this.model.nextColor();
