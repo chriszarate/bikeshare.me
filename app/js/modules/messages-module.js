@@ -26,6 +26,11 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
     showError(error);
   },
 
+  showLoadingAPI = function() {
+    isLoading = true;
+    config.els.api.button.html('Loading').removeClass().addClass('dimmed');
+  },
+
   // Warn the user (and hide after interval).
   showWarning = function(warning) {
     config.els.messages.warning.html(warning).slideDown();
@@ -76,15 +81,10 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   app.vent.bind('messages:warn', showWarning);
   app.vent.bind('messages:reset', resetMessages);
   app.vent.bind('messages:api:error', showErrorAPI);
+  app.vent.bind('messages:api:loading', showLoadingAPI);
   app.vent.bind('messages:api:updated', updateDate);
   app.vent.bind('messages:city:change', updateCity);
   app.vent.bind('messages:snapshot:link', updateSnapshotLink);
-
-  // Bind to "refresh" link.
-  config.els.api.button.on('click', function() {
-    isLoading = true;
-    $(this).html('Loading').removeClass().addClass('dimmed');
-  });
 
   // Refresh last-updated date every second.
   setInterval(updateDate, 1000);

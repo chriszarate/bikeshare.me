@@ -34,6 +34,10 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   // Request availablility data.
   fetchUpdate = function(geolocate) {
 
+    // Send event triggers.
+    app.vent.trigger('messages:reset');
+    app.vent.trigger('messages:api:loading');
+
     // Hide existing availability information.
     $('.bikes, .docks').hide();
 
@@ -127,17 +131,6 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     default:
       return 'inactive';
     }
-  },
-
-  // Update station availability.
-  updateAvailability = function() {
-
-    // Request update.
-    fetchUpdate();
-
-    // Send event triggers.
-    app.vent.trigger('messages:reset');
-
   },
 
   // Send availability data to stations view.
@@ -595,7 +588,7 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
   api.promise = false;
 
   // Bind to "refresh" button.
-  config.els.api.button.on('click', updateAvailability);
+  config.els.api.button.on('click', fetchUpdate);
 
   // Bind to events.
   app.vent.bind('api:update:fetch', fetchUpdate);
