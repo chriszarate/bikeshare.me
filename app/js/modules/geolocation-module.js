@@ -19,7 +19,8 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     standard: 'Nearby',
     unusable: 'Your location cannot be found within %str% ft.',
     inaccurate: 'Your location is accurate to about %str% ft.',
-    tooDistant: 'The closest station is %str% miles away.',
+    tooDistant: 'You are %str% miles from the nearest station.',
+    betterChoice: 'Switch to %str%?',
     error: 'Unable to find your location.',
     errorPermission: 'Permission to find your location was denied.',
     errorTimeout: 'The location request timed out.'
@@ -88,7 +89,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   parsePosition = function(pos) {
 
     // Format coordinates for helper function.
-    var coordinates = {
+    geolocation.pos = {
       lat: pos.coords.latitude,
       lng: pos.coords.longitude
     };
@@ -101,7 +102,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
       // Loop through stations and add location data.
       $.each(config.stations, function(i, station) {
-        station.rank = calculateDistance(station, coordinates);
+        station.rank = calculateDistance(station, geolocation.pos);
         station.distance = formatDistance(station.rank);
       });
 
@@ -168,10 +169,37 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     // Add nearby station suggestions.
     $.each(stations, function(i, station) {
 
-      // If the nearest station is very far away, show a warning.
+      // If the nearest station is very far away, show a warning or suggest
+      // another city.
       if(i === 0 && station.rank > options.flexRadius) {
-        showMessage(messages.tooDistant, Math.round(station.rank));
+
+        var foundCloserCity = false;
+
+        // Loop through available cities.
+        $.each(config.api, function(i, city) {
+
+          var pos = {
+            lat: convertE6(city.lat),
+            lng: convertE6(city.lng)
+          };
+
+          // If this city is within the acceptable range, offer it up.
+          if(calculateDistance(pos, geolocation.pos) < options.flexRadius) {
+            foundCloserCity = true;
+            showMessage(messages.betterChoice, '<a href="/' + city.id + '">' + city.title + '</a>');
+            return false;
+          }
+
+        });
+
+        // Otherwise, show comically far distance to nearest station.
+        if(!foundCloserCity) {
+          showMessage(messages.tooDistant, Math.round(station.rank));
+        }
+
+        // Break each loop.
         return false;
+
       }
 
       // Show the closest five stations and any others within a useful radius.
@@ -190,7 +218,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     if(replacement) {
       message = message.replace('%str%', replacement);
     }
-    config.els.geolocation.message.html(message).slideDown();
+    config.els.geolocation.message.html(message);
   },
 
   // Attempt geolocation.
@@ -256,6 +284,11 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   // Hide geolacation for errors and snapshots.
   hideGeolocation = function() {
     config.els.geolocation.container.slideUp();
+  },
+
+  // Convert from E6 geodata to decimal.
+  convertE6 = function(int) {
+    return int / 1000000;
   },
 
   // Calculate distance between two points.
