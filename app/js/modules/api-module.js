@@ -225,6 +225,8 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
       title: 'New York CitiBike',
       url: 'http://appservices.citibikenyc.com/data2/stations.php',
       map: 'http://api.citybik.es/citibikenyc.html',
+      lat: 40730286,
+      lng: -73990764,
       formatter: makeOrdinals,
       attributeMap: {
         root: 'results',
