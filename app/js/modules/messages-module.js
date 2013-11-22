@@ -3,7 +3,7 @@
 app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Last updated date.
-  var lastUpdated = false,
+  var lastUpdated = app.localstorage.get('last-updated'),
 
   // Internal loading indicator.
   isLoading = false,
@@ -21,7 +21,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
 
   // Report error with API.
   showErrorAPI = function(error) {
-    lastUpdated = false;
+    lastUpdated = null;
     config.els.api.button.html('Error').removeClass();
     showError(error);
   },
@@ -47,7 +47,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
   // Change last-updated date.
   updateDate = function(date) {
     if(typeof date === 'undefined') {
-      if(lastUpdated && !isLoading) {
+      if(lastUpdated !== null && !isLoading) {
         var timeago = $.timeago(lastUpdated);
         if(timeago !== config.els.api.button.html()) {
           config.els.api.button.html(timeago)
@@ -58,6 +58,7 @@ app.module('messages', function(messages, app, Backbone, Marionette, $) {
     } else {
       lastUpdated = date;
       isLoading = false;
+      app.localstorage.set('last-updated', lastUpdated);
       config.els.api.button.html('Updated').removeClass().addClass('dimmed');
     }
   },
