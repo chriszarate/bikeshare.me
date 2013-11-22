@@ -226,7 +226,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
 
     if(navigator.geolocation && !isLocating) {
 
-      if(getLocalStorage('disable-geolocation') === 'true') {
+      if(app.localstorage.get('disable-geolocation') === 'true') {
 
         // Show geolocation button.
         config.els.geolocation.button.show();
@@ -255,20 +255,8 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
   },
 
   retryGeolocation = function() {
-    setLocalStorage('disable-geolocation', 'false');
+    app.localstorage.set('disable-geolocation', 'false');
     geolocate();
-  },
-
-  // Set local storage.
-  setLocalStorage = function(key, value) {
-    if(window.localStorage) {
-      window.localStorage.setItem(key, value);
-    }
-  },
-
-  // Get local storage.
-  getLocalStorage = function(key) {
-    return (window.localStorage) ? window.localStorage.getItem(key) : null;
   },
 
   // Disable geolacation by user request.
@@ -277,7 +265,7 @@ app.module('geolocation', function(geolocation, app, Backbone, Marionette, $) {
     // Hide nearby stations, show button, and store decision.
     config.els.geolocation.container.slideUp();
     config.els.geolocation.button.show();
-    setLocalStorage('disable-geolocation', 'true');
+    app.localstorage.set('disable-geolocation', 'true');
 
   },
 
