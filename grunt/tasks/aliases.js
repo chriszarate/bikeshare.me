@@ -10,6 +10,7 @@ module.exports = function(grunt) {
       'jst',
       'uglify:app',
       'string-replace:fix',
+      'imageEmbed',
       'cssmin',
       'manifest'
     ]
