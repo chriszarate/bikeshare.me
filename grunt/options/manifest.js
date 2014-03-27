@@ -16,8 +16,8 @@ module.exports = {
     src: [
       'build/components.min.js',
       'build/app.min.js',
-      'css/main.min.css'
+      'build/app.min.css'
     ],
-    dest: 'app/cache.manifest'
+    dest: 'app/build/cache.manifest'
   }
 };

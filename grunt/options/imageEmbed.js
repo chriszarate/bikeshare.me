@@ -2,8 +2,11 @@
 
 module.exports = {
   dist: {
-    src: [ "app/css/main.css" ],
-    dest: "app/build/main.css",
+    src: [
+      'app/css/main.css',
+      'app/css/faq.css'
+    ],
+    dest: 'app/build/app.css',
     options: {
       baseDir: './app'
     }

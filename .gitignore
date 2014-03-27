@@ -2,7 +2,5 @@
 node_modules
 app/bower_components/
 app/build/
-app/cache.manifest
-app/css/*.min.css
 app/js/templates/compiled-templates.js
 etc/
