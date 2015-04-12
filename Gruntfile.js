@@ -120,6 +120,9 @@ module.exports = function(grunt) {
       },
       components: {
         files: {
+          'app/bower_components/backbone/backbone-min.js': [
+            'app/bower_components/backbone/backbone.js'
+          ],
           'app/bower_components/jquery-timeago/jquery.timeago.min.js': [
             'app/bower_components/jquery-timeago/jquery.timeago.js'
           ]
