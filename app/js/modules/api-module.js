@@ -223,21 +223,11 @@ app.module('api', function(api, app, Backbone, Marionette, $) {
     nyc: {
       id: 'nyc',
       title: 'New York CitiBike',
-      url: 'http://appservices.citibikenyc.com/data2/stations.php',
+      url: 'http://api.citybik.es/citibikenyc.json',
       map: 'http://api.citybik.es/citibikenyc.html',
       lat: 40730286,
       lng: -73990764,
       formatter: makeOrdinals,
-      attributeMap: {
-        root: 'results',
-        id: 'id',
-        status: 'status',
-        title: 'label',
-        lat: 'latitude',
-        lng: 'longitude',
-        bikes: 'availableBikes',
-        docks: 'availableDocks'
-      },
       altNames: {
         '382': 'Union Sq',
         '285': 'Union Sq',
