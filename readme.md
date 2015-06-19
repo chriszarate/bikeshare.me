@@ -32,11 +32,8 @@ Bikeshare.me uses [Node.js][nodejs], [Bower][bower], and [Grunt][grunt].
 # Clone this GitHub repository.
 git clone https://github.com/chriszarate/bikeshare.me bikeshare
 
-# Install Node.js dependencies.
-cd bikeshare && npm install
-
-# Install Bower dependencies.
-cd app && bower install
+# Install dependencies.
+cd bikeshare && npm install && bower install
 
 # Uglify dependencies.
 grunt setup

@@ -18,36 +18,36 @@ module.exports = function(grunt) {
             ' */\n\n'
         },
         files: {
-          'app/build/app.js': [
-            'app/js/init/*.js',
-            'app/js/config/*.js',
-            'app/js/models/*.js',
-            'app/js/views/*.js',
-            'app/js/controllers/*.js',
-            'app/js/routers/*.js',
-            'app/js/application/*.js',
-            'app/js/modules/*.js',
-            'app/js/main.js'
+          'build/app.js': [
+            'js/init/*.js',
+            'js/config/*.js',
+            'js/models/*.js',
+            'js/views/*.js',
+            'js/controllers/*.js',
+            'js/routers/*.js',
+            'js/application/*.js',
+            'js/modules/*.js',
+            'js/main.js'
           ]
         }
       },
       components: {
         files: {
-          'app/build/components.min.js': [
-            'app/bower_components/jquery/jquery.min.js',
-            'app/bower_components/lodash/dist/lodash.underscore.min.js',
-            'app/bower_components/backbone/backbone-min.js',
-            'app/bower_components/backbone.localStorage/backbone.localStorage-min.js',
-            'app/bower_components/backbone.marionette/lib/backbone.marionette.min.js',
-            'app/bower_components/typeahead.js/dist/typeahead.min.js',
-            'app/bower_components/jquery-timeago/jquery.timeago.min.js',
-            'app/bower_components/jquery-ui/ui/minified/jquery.ui.core.min.js',
-            'app/bower_components/jquery-ui/ui/minified/jquery.ui.widget.min.js',
-            'app/bower_components/jquery-ui/ui/minified/jquery.ui.mouse.min.js',
-            'app/bower_components/jquery-ui/ui/minified/jquery.ui.sortable.min.js',
-            'app/bower_components/jquery-ui/ui/minified/jquery.ui.droppable.min.js',
-            'app/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
-            'app/bower_components/base62/base62.min.js'
+          'build/components.min.js': [
+            'bower_components/jquery/jquery.min.js',
+            'bower_components/lodash/dist/lodash.underscore.min.js',
+            'bower_components/backbone/backbone-min.js',
+            'bower_components/backbone.localStorage/backbone.localStorage-min.js',
+            'bower_components/backbone.marionette/lib/backbone.marionette.min.js',
+            'bower_components/typeahead.js/dist/typeahead.min.js',
+            'bower_components/jquery-timeago/jquery.timeago.min.js',
+            'bower_components/jquery-ui/ui/minified/jquery.ui.core.min.js',
+            'bower_components/jquery-ui/ui/minified/jquery.ui.widget.min.js',
+            'bower_components/jquery-ui/ui/minified/jquery.ui.mouse.min.js',
+            'bower_components/jquery-ui/ui/minified/jquery.ui.sortable.min.js',
+            'bower_components/jquery-ui/ui/minified/jquery.ui.droppable.min.js',
+            'bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js',
+            'bower_components/base62/base62.min.js'
           ]
         }
       }
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
           jquery: true
         },
         files: {
-          src: ['app/build/app.js']
+          src: ['build/app.js']
         }
       }
     },
@@ -97,34 +97,34 @@ module.exports = function(grunt) {
           // Cannot use banner with source map (grunt-contrib-uglify #22).
           // banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n',
           preserveComments: 'some',
-          sourceMap: 'app/build/app.js.map',
+          sourceMap: 'build/app.js.map',
           sourceMapRoot: '/',
           sourceMapPrefix: 1,
           sourceMappingURL: '/build/app.js.map'
         },
         files: {
-          'app/build/app.min.js': [
-            'app/js/banner.txt',
-            'app/js/init/*.js',
-            'app/js/config/*.js',
-            'app/js/templates/*.js',
-            'app/js/models/*.js',
-            'app/js/views/*.js',
-            'app/js/controllers/*.js',
-            'app/js/routers/*.js',
-            'app/js/application/*.js',
-            'app/js/modules/*.js',
-            'app/js/main.js'
+          'build/app.min.js': [
+            'js/banner.txt',
+            'js/init/*.js',
+            'js/config/*.js',
+            'js/templates/*.js',
+            'js/models/*.js',
+            'js/views/*.js',
+            'js/controllers/*.js',
+            'js/routers/*.js',
+            'js/application/*.js',
+            'js/modules/*.js',
+            'js/main.js'
           ]
         }
       },
       components: {
         files: {
-          'app/bower_components/backbone/backbone-min.js': [
-            'app/bower_components/backbone/backbone.js'
+          'bower_components/backbone/backbone-min.js': [
+            'bower_components/backbone/backbone.js'
           ],
-          'app/bower_components/jquery-timeago/jquery.timeago.min.js': [
-            'app/bower_components/jquery-timeago/jquery.timeago.js'
+          'bower_components/jquery-timeago/jquery.timeago.min.js': [
+            'bower_components/jquery-timeago/jquery.timeago.js'
           ]
         }
       }
@@ -134,11 +134,11 @@ module.exports = function(grunt) {
     "string-replace": {
       fix: {
         files: {
-          'app/build/app.js.map': 'app/build/app.js.map'
+          'build/app.js.map': 'build/app.js.map'
         },
         options: {
           replacements: [{
-            pattern: '"file":"app/build/app.min.js"',
+            pattern: '"file":"build/app.min.js"',
             replacement: '"file":"build/app.min.js"'
           }]
         }
@@ -148,11 +148,11 @@ module.exports = function(grunt) {
     cssmin: {
       add_banner: {
         files: {
-          'app/css/main.min.css': [
-            'app/css/main.css'
+          'css/main.min.css': [
+            'css/main.css'
           ],
-          'app/css/faq.min.css': [
-            'app/css/faq.css'
+          'css/faq.min.css': [
+            'css/faq.css'
           ]
         }
       }
@@ -161,8 +161,8 @@ module.exports = function(grunt) {
     jst: {
       templates: {
         files: {
-          'app/js/templates/compiled-templates.js': [
-            'app/js/templates/*.tmpl'
+          'js/templates/compiled-templates.js': [
+            'js/templates/*.tmpl'
           ]
         }
       }
@@ -171,7 +171,7 @@ module.exports = function(grunt) {
     manifest: {
       generate: {
         options: {
-          basePath: 'app/',
+          basePath: '',
           cache: [
             'http://themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff',
             'http://themes.googleusercontent.com/static/fonts/lato/v6/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff'
@@ -186,7 +186,7 @@ module.exports = function(grunt) {
           'build/app.min.js',
           'css/main.min.css'
         ],
-        dest: 'app/cache.manifest'
+        dest: 'cache.manifest'
       }
     },
 
@@ -205,7 +205,7 @@ module.exports = function(grunt) {
           livereload: true
         },
         tasks: ['manifest'],
-        files: ['app/index.html']
+        files: ['index.html']
       },
       templates: {
         options: {
@@ -215,7 +215,7 @@ module.exports = function(grunt) {
           'templates'
         ],
         files: [
-          'app/js/templates/*.tmpl'
+          'js/templates/*.tmpl'
         ]
       },
       javascript: {
@@ -230,7 +230,7 @@ module.exports = function(grunt) {
           'manifest'
         ],
         files: [
-          'app/js/**/*.js'
+          'js/**/*.js'
         ]
       },
       css: {
@@ -242,8 +242,8 @@ module.exports = function(grunt) {
           'manifest'
         ],
         files: [
-          'app/css/main.css',
-          'app/css/faq.css'
+          'css/main.css',
+          'css/faq.css'
         ]
       }
     }
