@@ -190,7 +190,7 @@ var Stations = Backbone.Collection.extend({
 var StationView = Backbone.Marionette.ItemView.extend({
 
   tagName: 'li',
-  template: JST['app/js/templates/station.tmpl'],
+  template: JST['js/templates/station.tmpl'],
 
   serializeData: function() {
     return $.extend(
@@ -1799,7 +1799,7 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     $.extend(model, datum.availability);
 
     // Return populated template.
-    return JST['app/js/templates/station.tmpl'](model);
+    return JST['js/templates/station.tmpl'](model);
 
   },
 

@@ -3,7 +3,7 @@
 var StationView = Backbone.Marionette.ItemView.extend({
 
   tagName: 'li',
-  template: JST['app/js/templates/station.tmpl'],
+  template: JST['js/templates/station.tmpl'],
 
   serializeData: function() {
     return $.extend(

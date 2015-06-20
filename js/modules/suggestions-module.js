@@ -107,7 +107,7 @@ app.module('suggestions', function(suggestions, app, Backbone, Marionette, $) {
     $.extend(model, datum.availability);
 
     // Return populated template.
-    return JST['app/js/templates/station.tmpl'](model);
+    return JST['js/templates/station.tmpl'](model);
 
   },
 
